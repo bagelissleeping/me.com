@@ -1,0 +1,428 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>BOSS 求职助手｜作品集</title>
+    <style>
+      :root {
+        color-scheme: light;
+        --bg: #f5f7fb;
+        --surface: rgba(255, 255, 255, 0.96);
+        --surface-2: #eef3f8;
+        --ink: #0f172a;
+        --muted: #5b6472;
+        --border: #dbe3ed;
+        --accent: #0f766e;
+        --accent-strong: #115e59;
+        --success: #15803d;
+        --shadow: 0 20px 50px rgba(15, 23, 42, 0.06);
+        --radius: 24px;
+      }
+
+      * { box-sizing: border-box; }
+      html { scroll-behavior: smooth; }
+      body {
+        margin: 0;
+        background:
+          radial-gradient(circle at top right, rgba(15, 118, 110, 0.08), transparent 30%),
+          linear-gradient(180deg, #fbfcfe 0%, var(--bg) 100%);
+        color: var(--ink);
+        font-family: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+        line-height: 1.55;
+      }
+      a { color: inherit; text-decoration: none; }
+      h1,h2,h3,p,figure { margin: 0; }
+
+      .page {
+        width: min(1160px, calc(100% - 32px));
+        margin: 0 auto;
+        padding: 28px 0 56px;
+      }
+
+      .hero,
+      .card,
+      .chip,
+      .panel,
+      .shot,
+      .fact {
+        border: 1px solid var(--border);
+        border-radius: var(--radius);
+        background: var(--surface);
+        box-shadow: var(--shadow);
+      }
+
+      .hero {
+        padding: 28px;
+        display: grid;
+        grid-template-columns: minmax(0, 1.2fr) minmax(280px, 0.8fr);
+        gap: 20px;
+        align-items: stretch;
+      }
+
+      .eyebrow {
+        margin-bottom: 10px;
+        color: var(--muted);
+        font-size: 12px;
+        letter-spacing: 0.04em;
+      }
+
+      h1 {
+        font-size: clamp(2.6rem, 5.6vw, 4.8rem);
+        line-height: 1;
+        letter-spacing: -0.05em;
+        max-width: 10ch;
+      }
+
+      .lead {
+        margin-top: 14px;
+        max-width: 56ch;
+        font-size: 1rem;
+        color: var(--muted);
+      }
+
+      .chip-row {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+        margin-top: 20px;
+      }
+
+      .chip {
+        display: inline-flex;
+        align-items: center;
+        min-height: 34px;
+        padding: 0 12px;
+        background: var(--surface-2);
+        color: #334155;
+        font-size: 13px;
+        font-weight: 700;
+      }
+
+      .hero-side {
+        padding: 18px;
+        display: grid;
+        gap: 12px;
+        align-content: start;
+      }
+
+      .metric {
+        padding: 14px;
+        border: 1px solid var(--border);
+        border-radius: 18px;
+        background: var(--surface);
+        box-shadow: 0 8px 22px rgba(15, 23, 42, 0.04);
+      }
+
+      .metric span,
+      .fact span {
+        display: block;
+        font-size: 12px;
+        color: var(--muted);
+        margin-bottom: 6px;
+      }
+
+      .metric strong {
+        display: block;
+        font-size: 1.45rem;
+        line-height: 1;
+      }
+
+      .metric small {
+        display: block;
+        margin-top: 6px;
+        color: var(--muted);
+        font-size: 12px;
+      }
+
+      .section {
+        margin-top: 18px;
+      }
+
+      .section-head {
+        display: flex;
+        justify-content: space-between;
+        align-items: end;
+        gap: 12px;
+        margin-bottom: 14px;
+      }
+
+      .section-head h2 {
+        font-size: 1.35rem;
+        line-height: 1.15;
+      }
+
+      .section-head p {
+        max-width: 52ch;
+        color: var(--muted);
+        font-size: 14px;
+      }
+
+      .card {
+        padding: clamp(1.3rem, 3vw, 2rem);
+        display: grid;
+        gap: 1.2rem;
+      }
+
+      .card-head {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 12px;
+      }
+
+      .meta-line {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.5rem;
+        color: var(--muted);
+        font-size: 0.92rem;
+      }
+
+      .meta-line span {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.35rem;
+      }
+
+      .pill {
+        display: inline-flex;
+        align-items: center;
+        min-height: 30px;
+        padding: 0 12px;
+        border-radius: 999px;
+        background: rgba(21, 128, 61, 0.1);
+        color: var(--success);
+        font-size: 0.84rem;
+        font-weight: 700;
+      }
+
+      .portfolio-layout {
+        display: grid;
+        grid-template-columns: minmax(0, 0.92fr) minmax(360px, 1.08fr);
+        gap: 1.2rem;
+        align-items: start;
+      }
+
+      .portfolio-copy h3 {
+        margin-bottom: 0.9rem;
+        font-size: clamp(1.55rem, 2.6vw, 2.4rem);
+        line-height: 1.12;
+        letter-spacing: -0.05em;
+      }
+
+      .portfolio-copy p {
+        color: var(--muted);
+        line-height: 1.76;
+      }
+
+      .tag-row {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.6rem;
+        margin-top: 1rem;
+      }
+
+      .tag {
+        display: inline-flex;
+        align-items: center;
+        min-height: 34px;
+        padding: 0 12px;
+        border: 1px solid rgba(37, 99, 235, 0.14);
+        border-radius: 999px;
+        background: rgba(255, 255, 255, 0.72);
+        color: var(--accent-strong);
+        font-size: 13px;
+        font-weight: 700;
+      }
+
+      .portfolio-notes {
+        display: grid;
+        gap: 0.8rem;
+        margin: 1rem 0 1.2rem;
+      }
+
+      .fact {
+        padding: 1rem;
+        border-radius: 16px;
+      }
+
+      .fact strong {
+        display: block;
+        margin-bottom: 0.35rem;
+        color: var(--ink);
+      }
+
+      .fact p {
+        color: var(--muted);
+        line-height: 1.68;
+        font-size: 13px;
+      }
+
+      .portfolio-shots {
+        display: grid;
+        grid-template-columns: minmax(0, 0.92fr) minmax(0, 1.08fr);
+        gap: 0.9rem;
+        align-items: start;
+      }
+
+      .shot {
+        margin: 0;
+        border: 1px solid rgba(37, 99, 235, 0.12);
+        border-radius: 22px;
+        background: rgba(255, 255, 255, 0.72);
+        box-shadow: 0 20px 48px rgba(15, 23, 42, 0.08);
+        overflow: hidden;
+      }
+
+      .shot img {
+        display: block;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+      }
+
+      .shot-sidepanel { aspect-ratio: 420 / 1100; }
+      .shot-options { aspect-ratio: 980 / 980; }
+
+      .footer {
+        margin-top: 16px;
+        color: var(--muted);
+        font-size: 12px;
+      }
+
+      @media (max-width: 980px) {
+        .hero,
+        .portfolio-layout,
+        .portfolio-shots {
+          grid-template-columns: 1fr;
+        }
+
+        .shot-sidepanel,
+        .shot-options {
+          aspect-ratio: auto;
+        }
+      }
+
+      @media (max-width: 720px) {
+        .page {
+          width: min(100% - 20px, 1160px);
+          padding-top: 16px;
+        }
+
+        .hero,
+        .card {
+          padding: 20px;
+        }
+
+        .card-head,
+        .section-head {
+          align-items: start;
+          flex-direction: column;
+        }
+      }
+
+      @media (prefers-reduced-motion: reduce) {
+        html {
+          scroll-behavior: auto;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <main class="page">
+      <section class="hero">
+        <div>
+          <p class="eyebrow">Chrome 扩展作品集</p>
+          <h1>BOSS 求职助手</h1>
+          <p class="lead">岗位筛选, 复核, 批量投递, 记录回看。</p>
+          <div class="chip-row">
+            <span class="chip">BOSS 直聘</span>
+            <span class="chip">MV3</span>
+            <span class="chip">Vue 3</span>
+            <span class="chip">真实截图</span>
+          </div>
+        </div>
+
+        <aside class="hero-side">
+          <div class="metric">
+            <span>核心页面</span>
+            <strong>侧边栏</strong>
+            <small>状态、动作、结果集中展示。</small>
+          </div>
+          <div class="metric">
+            <span>配置入口</span>
+            <strong>规则中心</strong>
+            <small>年限硬筛和关键词维护。</small>
+          </div>
+          <div class="metric">
+            <span>执行方式</span>
+            <strong>批量化</strong>
+            <small>连续处理列表页岗位。</small>
+          </div>
+          <div class="metric">
+            <span>数据保存</span>
+            <strong>本地存储</strong>
+            <small>结果、历史、规则都落地。</small>
+          </div>
+        </aside>
+      </section>
+
+      <section class="section">
+        <div class="section-head">
+          <div>
+            <h2>一个产品, 一个卡片</h2>
+            <p>只保留一张主卡, 用真实截图展示产品外观和使用状态。</p>
+          </div>
+        </div>
+
+        <article class="card">
+          <div class="card-head">
+            <div class="meta-line">
+              <span>BOSS 求职助手</span>
+              <span>Chrome Extension</span>
+            </div>
+            <span class="pill">真实截图</span>
+          </div>
+
+          <div class="portfolio-layout">
+            <div class="portfolio-copy">
+              <h3>岗位筛选、复核与批量投递</h3>
+              <p>把 BOSS 直聘列表页的判断、执行和回看收进同一侧边栏。</p>
+              <div class="tag-row">
+                <span class="tag">列表页识别</span>
+                <span class="tag">批量投递</span>
+                <span class="tag">待复核</span>
+                <span class="tag">历史记录</span>
+              </div>
+
+              <div class="portfolio-notes">
+                <div class="fact">
+                  <span>实现方式</span>
+                  <strong>background / content / sidepanel</strong>
+                  <p>background 负责上下文和任务桥接，content 负责列表解析和执行，sidepanel 负责状态与结果。</p>
+                </div>
+                <div class="fact">
+                  <span>真实流程</span>
+                  <strong>识别, 筛选, 投递, 复核, 回看</strong>
+                  <p>从 BOSS 列表页开始, 直到结果和规则保存结束。</p>
+                </div>
+              </div>
+            </div>
+
+            <div class="portfolio-shots">
+              <figure class="shot shot-sidepanel">
+                <img src="../assets/portfolio/sidepanel-real.png" alt="BOSS 求职助手侧边栏真实截图" />
+              </figure>
+              <figure class="shot shot-options">
+                <img src="../assets/portfolio/options-real.png" alt="BOSS 求职助手设置页真实截图" />
+              </figure>
+            </div>
+          </div>
+        </article>
+      </section>
+
+      <div class="footer">独立子页, 可直接分享或嵌入个人网站。</div>
+    </main>
+  </body>
+</html>
