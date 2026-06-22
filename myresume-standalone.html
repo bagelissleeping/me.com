@@ -1,0 +1,1067 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>张慧｜AI 产品经理</title>
+    <meta
+      name="description"
+      content="张慧的 AI 产品经理个人网站，以叙事方式展示教育背景、工作经历、项目经历与技能能力。"
+    />
+    <style>
+:root {
+  --white: #ffffff;
+  --ink: #061225;
+  --muted: #526071;
+  --soft: #8793a3;
+  --blue: #0057d8;
+  --blue-deep: #003b95;
+  --blue-dark: #071f55;
+  --blue-soft: #edf4ff;
+  --blue-wash: #f6faff;
+  --blue-line: #c8daf7;
+  --line: #e4ebf5;
+  --panel: #f8fbff;
+  --shadow-blue: 0 28px 80px rgba(0, 55, 140, 0.12);
+  --max: 1180px;
+  --radius-sm: 8px;
+  --radius-md: 14px;
+  --z-sticky: 20;
+  --z-toast: 30;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  margin: 0;
+  min-height: 100dvh;
+  color: var(--ink);
+  background: var(--white);
+  font-family: "Aptos", "Segoe UI", "Microsoft YaHei UI", "Microsoft YaHei", ui-sans-serif, system-ui, sans-serif;
+  overflow-x: hidden;
+}
+
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  background:
+    linear-gradient(90deg, rgba(0, 87, 216, 0.045) 1px, transparent 1px),
+    linear-gradient(180deg, rgba(0, 87, 216, 0.04) 1px, transparent 1px);
+  background-size: 88px 88px;
+  mask-image: linear-gradient(180deg, rgba(0, 0, 0, 0.45), transparent 64%);
+}
+
+button,
+a {
+  font: inherit;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+button {
+  border: 0;
+  cursor: pointer;
+}
+
+:focus-visible {
+  outline: 3px solid rgba(0, 87, 216, 0.28);
+  outline-offset: 4px;
+}
+
+.skip-link {
+  position: fixed;
+  left: 16px;
+  top: 16px;
+  z-index: var(--z-toast);
+  padding: 10px 14px;
+  background: var(--blue);
+  color: var(--white);
+  border-radius: var(--radius-sm);
+  transform: translateY(-140%);
+}
+
+.skip-link:focus {
+  transform: translateY(0);
+}
+
+.site-header {
+  position: sticky;
+  top: 0;
+  z-index: var(--z-sticky);
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  align-items: center;
+  gap: 28px;
+  width: min(var(--max), calc(100vw - 40px));
+  min-height: 76px;
+  margin: 0 auto;
+  background: rgba(255, 255, 255, 0.9);
+  backdrop-filter: blur(18px);
+  border-bottom: 1px solid rgba(228, 235, 245, 0.8);
+}
+
+.brand-mark {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 10px;
+}
+
+.brand-mark span {
+  color: var(--blue);
+  font-size: 1.15rem;
+  font-weight: 850;
+}
+
+.site-nav,
+.header-email {
+  color: var(--muted);
+  font-size: 0.94rem;
+}
+
+.site-nav {
+  display: flex;
+  justify-content: center;
+  gap: 28px;
+}
+
+.site-nav a,
+.header-email {
+  transition: color 180ms ease, transform 180ms ease;
+}
+
+.site-nav a:hover,
+.header-email:hover {
+  color: var(--blue);
+  transform: translateY(-1px);
+}
+
+.header-email {
+  color: var(--blue-deep);
+  font-weight: 700;
+  overflow-wrap: anywhere;
+}
+
+.hero {
+  min-height: calc(100dvh - 76px);
+  display: flex;
+  align-items: center;
+  padding: clamp(52px, 8vw, 96px) 0 clamp(86px, 11vw, 136px);
+}
+
+.hero-inner,
+.section-shell {
+  width: min(var(--max), calc(100vw - 40px));
+  margin: 0 auto;
+}
+
+.hero-inner {
+  display: grid;
+  grid-template-columns: minmax(0, 1.05fr) minmax(320px, 0.72fr);
+  gap: clamp(42px, 7vw, 104px);
+  align-items: center;
+}
+
+.role-line,
+.section-kicker,
+.case-type {
+  margin: 0 0 18px;
+  color: var(--blue);
+  font-size: 0.95rem;
+  font-weight: 760;
+}
+
+h1,
+h2,
+h3,
+h4,
+p {
+  margin-top: 0;
+}
+
+h1 {
+  max-width: 15ch;
+  margin-bottom: 28px;
+  font-size: clamp(3.3rem, 7.2vw, 6rem);
+  line-height: 1.03;
+  letter-spacing: 0;
+  text-wrap: balance;
+}
+
+.hero-lede {
+  max-width: 690px;
+  margin-bottom: 34px;
+  color: var(--muted);
+  font-size: clamp(1.06rem, 1.5vw, 1.24rem);
+  line-height: 1.78;
+  text-wrap: pretty;
+}
+
+.contact-email {
+  color: var(--blue-deep);
+  font-weight: 800;
+  overflow-wrap: anywhere;
+}
+
+.signal-board {
+  position: relative;
+  padding: clamp(24px, 4vw, 34px);
+  color: var(--ink);
+  border-radius: var(--radius-md);
+  border: 1px solid var(--blue-line);
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.9), rgba(237, 244, 255, 0.96)),
+    var(--blue-wash);
+  box-shadow: var(--shadow-blue);
+  overflow: hidden;
+}
+
+.signal-board::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(90deg, rgba(0, 87, 216, 0.08) 1px, transparent 1px),
+    linear-gradient(180deg, rgba(0, 87, 216, 0.07) 1px, transparent 1px);
+  background-size: 34px 34px;
+  opacity: 0.58;
+}
+
+.signal-head,
+.signal-track {
+  position: relative;
+}
+
+.signal-head {
+  display: flex;
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: 42px;
+  color: var(--muted);
+  font-size: 0.88rem;
+}
+
+.signal-track {
+  display: grid;
+  gap: 18px;
+}
+
+.signal-node {
+  padding: 18px;
+  border: 1px solid var(--blue-line);
+  border-radius: var(--radius-sm);
+  background: rgba(255, 255, 255, 0.84);
+  box-shadow: 0 12px 34px rgba(0, 55, 140, 0.06);
+}
+
+.signal-node span {
+  display: block;
+  margin-bottom: 18px;
+  color: rgba(0, 59, 149, 0.62);
+  font-variant-numeric: tabular-nums;
+}
+
+.signal-node strong {
+  display: block;
+  margin-bottom: 6px;
+  font-size: 1.1rem;
+}
+
+.signal-node p {
+  margin: 0;
+  color: var(--muted);
+  line-height: 1.65;
+}
+
+.signal-node.is-strong {
+  border-color: var(--blue);
+  background: var(--blue);
+  color: var(--white);
+}
+
+.signal-node.is-strong p,
+.signal-node.is-strong span {
+  color: rgba(255, 255, 255, 0.82);
+}
+
+.section-shell {
+  padding: clamp(82px, 10vw, 140px) 0;
+}
+
+.section-intro {
+  max-width: 820px;
+  margin-bottom: clamp(32px, 5vw, 58px);
+}
+
+.section-intro h2 {
+  margin-bottom: 0;
+  font-size: clamp(2.1rem, 4.6vw, 4.35rem);
+  line-height: 1.08;
+  letter-spacing: 0;
+  text-wrap: balance;
+}
+
+.narrative-strip {
+  display: grid;
+  grid-template-columns: minmax(0, 0.85fr) minmax(320px, 1fr);
+  gap: clamp(32px, 7vw, 88px);
+  border-top: 1px solid var(--line);
+  border-bottom: 1px solid var(--line);
+}
+
+.strip-grid {
+  display: grid;
+  gap: 24px;
+  align-content: center;
+}
+
+.strip-grid p {
+  margin: 0;
+  max-width: 62ch;
+  color: var(--muted);
+  font-size: 1.06rem;
+  line-height: 1.82;
+}
+
+.education-stage {
+  display: grid;
+  gap: 0;
+}
+
+.education-row {
+  display: grid;
+  grid-template-columns: 80px minmax(0, 1fr) auto;
+  gap: 28px;
+  align-items: center;
+  padding: 26px 0;
+  border-top: 1px solid var(--line);
+}
+
+.education-row:last-child {
+  border-bottom: 1px solid var(--line);
+}
+
+.education-index,
+.case-step span {
+  color: var(--blue);
+  font-variant-numeric: tabular-nums;
+  font-weight: 800;
+}
+
+.education-row h3 {
+  margin-bottom: 6px;
+  font-size: clamp(1.35rem, 2vw, 1.8rem);
+}
+
+.education-row p,
+.education-row time,
+.panel-proof,
+.evidence-item p,
+.case-hook,
+.case-step p,
+.contact-marquee p {
+  color: var(--muted);
+  line-height: 1.75;
+  text-wrap: pretty;
+}
+
+.experience-lab,
+.case-room {
+  display: grid;
+  grid-template-columns: minmax(260px, 0.42fr) minmax(0, 1fr);
+  gap: clamp(24px, 5vw, 62px);
+  align-items: start;
+}
+
+.experience-tabs,
+.case-selector {
+  display: grid;
+  gap: 12px;
+  position: sticky;
+  top: 96px;
+}
+
+.experience-tab,
+.case-button {
+  display: grid;
+  gap: 8px;
+  width: 100%;
+  padding: 18px;
+  text-align: left;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-sm);
+  background: rgba(255, 255, 255, 0.86);
+  color: var(--ink);
+  transition: transform 200ms ease, border-color 200ms ease, background 200ms ease, box-shadow 200ms ease;
+}
+
+.experience-tab:hover,
+.case-button:hover {
+  transform: translateY(-2px);
+  border-color: var(--blue-line);
+  box-shadow: 0 14px 36px rgba(0, 55, 140, 0.08);
+}
+
+.experience-tab.is-active,
+.case-button.is-active {
+  border-color: var(--blue);
+  background: var(--blue-soft);
+}
+
+.experience-tab span,
+.case-button span,
+.panel-meta {
+  color: var(--soft);
+  font-size: 0.88rem;
+}
+
+.experience-tab strong,
+.case-button strong {
+  font-size: 1.02rem;
+}
+
+.experience-tab em {
+  color: var(--muted);
+  font-style: normal;
+  line-height: 1.58;
+}
+
+.experience-panel,
+.case-panel {
+  min-height: 580px;
+  padding: clamp(28px, 4.6vw, 54px);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-md);
+  background: var(--white);
+  box-shadow: 0 24px 70px rgba(0, 55, 140, 0.08);
+}
+
+.panel-meta {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+  margin-bottom: 22px;
+}
+
+.experience-panel h3,
+.case-panel h3 {
+  max-width: 720px;
+  margin-bottom: 18px;
+  font-size: clamp(2rem, 4vw, 3.7rem);
+  line-height: 1.08;
+  letter-spacing: 0;
+  text-wrap: balance;
+}
+
+.tag-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.tag {
+  display: inline-flex;
+  align-items: center;
+  min-height: 32px;
+  padding: 0 10px;
+  border-radius: var(--radius-sm);
+  color: var(--blue-deep);
+  background: var(--blue-soft);
+  font-size: 0.9rem;
+  font-weight: 700;
+}
+
+.evidence-list {
+  display: grid;
+  gap: 0;
+  margin-top: 34px;
+}
+
+.evidence-item {
+  display: grid;
+  grid-template-columns: minmax(130px, 0.25fr) minmax(0, 1fr);
+  gap: 24px;
+  padding: 20px 0;
+  border-top: 1px solid var(--line);
+}
+
+.evidence-item h4 {
+  margin-bottom: 0;
+  color: var(--blue-deep);
+  font-size: 1rem;
+}
+
+.evidence-item p {
+  margin-bottom: 0;
+}
+
+.case-panel-head {
+  display: flex;
+  justify-content: space-between;
+  gap: 24px;
+  margin-bottom: 24px;
+}
+
+.case-hook {
+  max-width: 760px;
+  margin-bottom: 36px;
+  font-size: 1.12rem;
+}
+
+.case-steps {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 1px;
+  background: var(--line);
+  border: 1px solid var(--line);
+}
+
+.case-step {
+  min-height: 250px;
+  padding: 22px;
+  background: var(--white);
+}
+
+.case-step span {
+  display: block;
+  margin-bottom: 34px;
+}
+
+.case-step h4 {
+  margin-bottom: 12px;
+  font-size: 1.12rem;
+}
+
+.capability-canvas {
+  display: grid;
+  grid-template-columns: repeat(6, minmax(0, 1fr));
+  gap: 14px;
+}
+
+.capability-tile {
+  min-height: 230px;
+  padding: 24px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-md);
+  background: var(--white);
+  box-shadow: 0 18px 52px rgba(0, 55, 140, 0.06);
+}
+
+.capability-tile:nth-child(1),
+.capability-tile:nth-child(5) {
+  grid-column: span 2;
+}
+
+.capability-tile:nth-child(2),
+.capability-tile:nth-child(3),
+.capability-tile:nth-child(4) {
+  grid-column: span 2;
+}
+
+.capability-tile::before {
+  content: attr(data-order);
+  display: block;
+  margin-bottom: 48px;
+  color: var(--blue);
+  font-weight: 800;
+  font-variant-numeric: tabular-nums;
+}
+
+.capability-tile h3 {
+  margin-bottom: 18px;
+  font-size: clamp(1.35rem, 2.2vw, 2rem);
+}
+
+.contact-section {
+  padding-bottom: clamp(64px, 8vw, 96px);
+}
+
+.contact-marquee {
+  padding: clamp(30px, 6vw, 64px);
+  color: var(--white);
+  border-radius: var(--radius-md);
+  background: var(--blue-dark);
+  box-shadow: var(--shadow-blue);
+}
+
+.contact-marquee .section-kicker,
+.contact-marquee p {
+  color: rgba(255, 255, 255, 0.78);
+}
+
+.contact-marquee h2 {
+  max-width: 820px;
+  margin-bottom: 26px;
+  font-size: clamp(2rem, 5vw, 4.8rem);
+  line-height: 1.08;
+  letter-spacing: 0;
+  text-wrap: balance;
+}
+
+.contact-email {
+  display: inline-block;
+  color: var(--white);
+  font-size: clamp(1.25rem, 3vw, 2.7rem);
+}
+
+.load-state,
+.noscript-panel {
+  position: fixed;
+  right: 20px;
+  bottom: 20px;
+  z-index: var(--z-toast);
+  max-width: 360px;
+  padding: 12px 14px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-sm);
+  color: var(--muted);
+  background: var(--white);
+  box-shadow: var(--shadow-blue);
+}
+
+.load-state.is-hidden {
+  display: none;
+}
+
+.load-state.is-error {
+  color: #9b1c1c;
+}
+
+.reveal-item {
+  opacity: 1;
+  transform: translateY(0);
+  transition: opacity 620ms ease, transform 620ms ease;
+}
+
+@supports (animation-timeline: view()) {
+  .reveal-item {
+    animation: revealIn both;
+    animation-timeline: view();
+    animation-range: entry 0% cover 28%;
+  }
+}
+
+@keyframes revealIn {
+  from {
+    opacity: 0;
+    transform: translateY(22px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@media (max-width: 980px) {
+  .site-header {
+    grid-template-columns: 1fr auto;
+  }
+
+  .site-nav {
+    display: none;
+  }
+
+  .hero-inner,
+  .narrative-strip,
+  .experience-lab,
+  .case-room {
+    grid-template-columns: 1fr;
+  }
+
+  .experience-tabs,
+  .case-selector {
+    position: static;
+  }
+
+  .case-steps,
+  .capability-canvas {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .capability-tile,
+  .capability-tile:nth-child(1),
+  .capability-tile:nth-child(2),
+  .capability-tile:nth-child(3),
+  .capability-tile:nth-child(4),
+  .capability-tile:nth-child(5) {
+    grid-column: auto;
+  }
+}
+
+@media (max-width: 640px) {
+  .site-header,
+  .hero-inner,
+  .section-shell {
+    width: min(100vw - 28px, var(--max));
+  }
+
+  .site-header {
+    min-height: 66px;
+  }
+
+  .brand-mark span + span {
+    display: none;
+  }
+
+  .header-email {
+    font-size: 0.82rem;
+    max-width: 52vw;
+    text-align: right;
+  }
+
+  .hero {
+    min-height: auto;
+    padding-top: 58px;
+  }
+
+  h1 {
+    max-width: 12ch;
+    font-size: clamp(2.45rem, 12.2vw, 4rem);
+  }
+
+  .section-shell {
+    padding: 68px 0;
+  }
+
+  .education-row,
+  .evidence-item,
+  .case-panel-head,
+  .case-steps,
+  .capability-canvas {
+    grid-template-columns: 1fr;
+  }
+
+  .education-row {
+    gap: 12px;
+    align-items: start;
+  }
+
+  .experience-panel,
+  .case-panel {
+    min-height: auto;
+    padding: 24px;
+  }
+
+  .case-step {
+    min-height: auto;
+  }
+
+  .case-step span,
+  .capability-tile::before {
+    margin-bottom: 24px;
+  }
+
+  .load-state,
+  .noscript-panel {
+    left: 14px;
+    right: 14px;
+    bottom: 14px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    scroll-behavior: auto !important;
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+    </style>
+  </head>
+  <body>
+    <a class="skip-link" href="#main">跳到正文</a>
+
+    <header class="site-header" aria-label="页面导航">
+      <a class="brand-mark" href="#top" aria-label="回到首页">
+        <span>AI PM.ZH.com</span>
+      </a>
+      <nav class="site-nav" aria-label="主要导航">
+        <a href="#education">教育</a>
+        <a href="#experience">经历</a>
+        <a href="#projects">项目</a>
+        <a href="#capability">能力</a>
+      </nav>
+      <a class="header-email" href="mailto:18274320789@163.com">18274320789@163.com</a>
+    </header>
+
+    <main id="main">
+      <section class="hero" id="top" aria-labelledby="hero-title">
+        <div class="hero-inner">
+          <div class="hero-copy reveal-item">
+            <p class="role-line">张慧 / AI Product Manager</p>
+            <h1 id="hero-title">把复杂问题拆成清晰场景，把 AI 能力落成可验证、可推进、可复用的产品方案。</h1>
+            <p class="hero-lede">
+              我的核心能力，是在不确定的业务环境里识别真实需求，设计可执行流程，用原型和试点把产品判断尽快验证出来。
+            </p>
+          </div>
+
+          <aside class="signal-board reveal-item" aria-label="产品方法概览">
+            <div class="signal-head">
+              <span>Product signal map</span>
+              <span>业务现场到 AI 产品</span>
+            </div>
+            <div class="signal-track">
+              <div class="signal-node is-strong">
+                <span>01</span>
+                <strong>识别场景</strong>
+                <p>先判断问题频次、业务价值，以及流程是否高度结构化。</p>
+              </div>
+              <div class="signal-node">
+                <span>02</span>
+                <strong>拆解链路</strong>
+                <p>围绕已确认的问题，梳理输入、规则、角色协作和可复核节点。</p>
+              </div>
+              <div class="signal-node">
+                <span>03</span>
+                <strong>验证方案</strong>
+                <p>把链路做成原型或 Demo，用试点结果判断是否值得继续投入。</p>
+              </div>
+            </div>
+          </aside>
+        </div>
+      </section>
+
+      <section class="section-shell narrative-strip" aria-labelledby="narrative-title">
+        <div class="section-intro reveal-item">
+          <p class="section-kicker">核心叙事</p>
+          <h2 id="narrative-title">不是把 AI 放进页面，而是把 AI 接进业务链路。</h2>
+        </div>
+        <div class="strip-grid">
+          <p class="reveal-item">
+            在复杂业务里，产品经理的关键工作不是堆功能，而是判断哪一段流程值得被重构，哪些规则可以被结构化，哪些结果需要被人复核。
+          </p>
+          <p class="reveal-item">
+            我更关注可解释、可验证、可协作的 AI 产品形态：让模型能力进入业务闭环，而不是停留在演示效果。
+          </p>
+        </div>
+      </section>
+
+      <section class="section-shell education-section" id="education" aria-labelledby="education-title">
+        <div class="section-intro reveal-item">
+          <p class="section-kicker">教育背景</p>
+          <h2 id="education-title">金融与保险背景，让我更习惯从规则、风险和产品边界看问题。</h2>
+        </div>
+        <div class="education-stage" id="education-stage">
+    <article class="education-row reveal-item">
+      <span class="education-index">01</span>
+      <div>
+        <h3>西南财经大学</h3>
+        <p>硕士 · 保险</p>
+      </div>
+      <time>2022-09 至 2024-06</time>
+    </article>
+  
+    <article class="education-row reveal-item">
+      <span class="education-index">02</span>
+      <div>
+        <h3>四川农业大学</h3>
+        <p>本科 · 金融学</p>
+      </div>
+      <time>2018-09 至 2022-06</time>
+    </article>
+  </div>
+      </section>
+
+      <section class="section-shell experience-section" id="experience" aria-labelledby="experience-title">
+        <div class="section-intro reveal-item">
+          <p class="section-kicker">工作经历</p>
+          <h2 id="experience-title">两段经历，构成我的产品判断方式。</h2>
+        </div>
+        <div class="experience-lab reveal-item">
+          <div class="experience-tabs" id="experience-tabs" aria-label="工作经历选择">
+      <button class="experience-tab is-active" type="button" data-experience-index="0" aria-pressed="true">
+        <span>2025-07 至今</span>
+        <strong>上海复深蓝软件股份有限公司</strong>
+        <em>从复杂系统中识别 AI 产品机会，并推进到 Demo、试点和客户沟通。</em>
+      </button>
+    
+      <button class="experience-tab " type="button" data-experience-index="1" aria-pressed="false">
+        <span>2024-07 至 2025-07</span>
+        <strong>中国人民财产保险股份有限公司上海科技分公司</strong>
+        <em>在保险产品、风险和运营一线建立业务判断，理解产品落地背后的约束。</em>
+      </button>
+    </div>
+          <article class="experience-panel" id="experience-panel" aria-live="polite">
+    <div class="panel-meta">
+      <span>研究院</span>
+      <span>AI产品经理</span>
+    </div>
+    <h3>从复杂系统中识别 AI 产品机会，并推进到 Demo、试点和客户沟通。</h3>
+    <p class="panel-proof">把隐性业务需求整理成独立产品机会，主导从方案设计、技术选型到 Demo 落地的全过程。</p>
+    <div class="tag-row"><span class="tag">AI 产品孵化</span><span class="tag">复杂流程抽象</span><span class="tag">Demo 验证</span><span class="tag">客户试点</span></div>
+    <div class="evidence-list">
+      
+        <section class="evidence-item">
+          <h4>产品创新与 0-1 孵化</h4>
+          <p>深入业务一线识别合适的场景，独立完成产品定义、试点验证与后续推进。曾将内部某复杂系统中的隐性需求整理成独立产品机会，主导从方案设计、技术选型（工作流 + 检索）到 Demo 落地的全过程，推动产品进入试点阶段。</p>
+        </section>
+      
+        <section class="evidence-item">
+          <h4>复杂系统设计与抽象</h4>
+          <p>擅长处理知识密集型场景下的多角色、多步骤流程，能够把非结构化业务规则整理成结构化方案。曾设计并落地方案文档生成、智能审查、申报材料拆解与报告生成的流程，打通从创作到审查报送的闭环。</p>
+        </section>
+      
+        <section class="evidence-item">
+          <h4>技术理解与动手验证</h4>
+          <p>具备独立的原型能力，能使用 Cursor 等工具快速搭建可交互 Demo，用于方案评审和内部推进，减少研发沟通成本。</p>
+        </section>
+      
+        <section class="evidence-item">
+          <h4>B 端需求交付与客户沟通</h4>
+          <p>独立负责某大型 ToB 管理系统 13 个模块的全周期交付，深入业务一线进行需求挖掘、拆解和整理，输出完整的 PRD 和原型。主导近百场需求评审与客户沟通，推动系统上线并获得客户认可。</p>
+        </section>
+      
+    </div>
+  </article>
+        </div>
+      </section>
+
+      <section class="section-shell projects-section" id="projects" aria-labelledby="projects-title">
+        <div class="section-intro reveal-item">
+          <p class="section-kicker">项目经历</p>
+          <h2 id="projects-title">用案例看方法，而不是看功能清单。</h2>
+        </div>
+        <div class="case-room reveal-item">
+          <div class="case-selector" id="case-selector" aria-label="项目选择">
+      <button class="case-button is-active" type="button" data-project-index="0" aria-pressed="true">
+        <span>2025-07 至今</span>
+        <strong>保险合规审查多 Agent 协同系统</strong>
+      </button>
+    
+      <button class="case-button " type="button" data-project-index="1" aria-pressed="false">
+        <span>场景验证</span>
+        <strong>销售赋能智能体</strong>
+      </button>
+    </div>
+          <article class="case-panel" id="case-panel" aria-live="polite">
+    <div class="case-panel-head">
+      <div>
+        <p class="case-type">产品经理</p>
+        <h3>保险合规审查多 Agent 协同系统</h3>
+      </div>
+      <div class="tag-row"><span class="tag">合规审查</span><span class="tag">Multi-Agent</span><span class="tag">Workflow / RAG</span><span class="tag">Prompt 迭代</span></div>
+    </div>
+    <p class="case-hook">把合规审查从人工经验整理成可复用的 AI 审查链路。</p>
+    <div class="case-steps">
+      
+        <section class="case-step">
+          <span>01</span>
+          <h4>业务问题</h4>
+          <p>保险条款、营销文案等材料审查依赖人工经验，效率低，标准难统一。</p>
+        </section>
+      
+        <section class="case-step">
+          <span>02</span>
+          <h4>产品拆解</h4>
+          <p>把审查目标、风险判断依据、修改建议和报告输出拆成分阶段流程。</p>
+        </section>
+      
+        <section class="case-step">
+          <span>03</span>
+          <h4>验证推进</h4>
+          <p>基于客户条款样本和同类材料，完成 4 版核心提示词迭代与测试优化。</p>
+        </section>
+      
+        <section class="case-step">
+          <span>04</span>
+          <h4>结果沉淀</h4>
+          <p>单份材料审查时间缩短到 30 分钟内，在 3 家以上客户试点中获得认可。</p>
+        </section>
+      
+    </div>
+  </article>
+        </div>
+      </section>
+
+      <section class="section-shell capability-section" id="capability" aria-labelledby="capability-title">
+        <div class="section-intro reveal-item">
+          <p class="section-kicker">技能能力</p>
+          <h2 id="capability-title">能把想法讲清楚，也能把 Demo 做出来。</h2>
+        </div>
+        <div class="capability-canvas" id="capability-canvas">
+      <article class="capability-tile reveal-item" data-order="01">
+        <h3>产品定义</h3>
+        <div class="tag-row"><span class="tag">需求分析</span><span class="tag">场景整理</span><span class="tag">产品定义</span><span class="tag">PRD</span><span class="tag">原型设计</span><span class="tag">客户沟通</span></div>
+      </article>
+    
+      <article class="capability-tile reveal-item" data-order="02">
+        <h3>AI 工作流</h3>
+        <div class="tag-row"><span class="tag">Prompt Engineering</span><span class="tag">Badcase 分析</span><span class="tag">多阶段工作流设计</span></div>
+      </article>
+    
+      <article class="capability-tile reveal-item" data-order="03">
+        <h3>验证推进</h3>
+        <div class="tag-row"><span class="tag">Demo 搭建</span><span class="tag">方案验证</span><span class="tag">POC 推进</span><span class="tag">客户演示支持</span><span class="tag">深度使用 Cursor、Claude Code、Codex 等 AI 工具进行原型与 Demo 快速验证</span></div>
+      </article>
+    
+      <article class="capability-tile reveal-item" data-order="04">
+        <h3>行业洞察</h3>
+        <div class="tag-row"><span class="tag">能深入行业现场形成自己的观察</span><span class="tag">能将行业规则与流程抽象为 AI 可执行链路</span></div>
+      </article>
+    
+      <article class="capability-tile reveal-item" data-order="05">
+        <h3>证书技能</h3>
+        <div class="tag-row"><span class="tag">北美准精算师考试通过两门（P、FM）</span><span class="tag">证券从业资格证</span><span class="tag">英语六级</span></div>
+      </article>
+    </div>
+      </section>
+
+      <section class="section-shell contact-section" id="contact" aria-labelledby="contact-title">
+        <div class="contact-marquee reveal-item">
+          <p class="section-kicker">联系</p>
+          <h2 id="contact-title">如果你要找一个能把 AI 产品推进到业务现场的人。</h2>
+          <a class="contact-email" href="mailto:18274320789@163.com">18274320789@163.com</a>
+        </div>
+      </section>
+    </main>
+    <script>
+
+(() => {
+  const experiencePanels = ["\n    <div class=\"panel-meta\">\n      <span>研究院<\/span>\n      <span>AI产品经理<\/span>\n    <\/div>\n    <h3>从复杂系统中识别 AI 产品机会，并推进到 Demo、试点和客户沟通。<\/h3>\n    <p class=\"panel-proof\">把隐性业务需求整理成独立产品机会，主导从方案设计、技术选型到 Demo 落地的全过程。<\/p>\n    <div class=\"tag-row\"><span class=\"tag\">AI 产品孵化<\/span><span class=\"tag\">复杂流程抽象<\/span><span class=\"tag\">Demo 验证<\/span><span class=\"tag\">客户试点<\/span><\/div>\n    <div class=\"evidence-list\">\n      \n        <section class=\"evidence-item\">\n          <h4>产品创新与 0-1 孵化<\/h4>\n          <p>深入业务一线识别合适的场景，独立完成产品定义、试点验证与后续推进。曾将内部某复杂系统中的隐性需求整理成独立产品机会，主导从方案设计、技术选型（工作流 + 检索）到 Demo 落地的全过程，推动产品进入试点阶段。<\/p>\n        <\/section>\n      \n        <section class=\"evidence-item\">\n          <h4>复杂系统设计与抽象<\/h4>\n          <p>擅长处理知识密集型场景下的多角色、多步骤流程，能够把非结构化业务规则整理成结构化方案。曾设计并落地方案文档生成、智能审查、申报材料拆解与报告生成的流程，打通从创作到审查报送的闭环。<\/p>\n        <\/section>\n      \n        <section class=\"evidence-item\">\n          <h4>技术理解与动手验证<\/h4>\n          <p>具备独立的原型能力，能使用 Cursor 等工具快速搭建可交互 Demo，用于方案评审和内部推进，减少研发沟通成本。<\/p>\n        <\/section>\n      \n        <section class=\"evidence-item\">\n          <h4>B 端需求交付与客户沟通<\/h4>\n          <p>独立负责某大型 ToB 管理系统 13 个模块的全周期交付，深入业务一线进行需求挖掘、拆解和整理，输出完整的 PRD 和原型。主导近百场需求评审与客户沟通，推动系统上线并获得客户认可。<\/p>\n        <\/section>\n      \n    <\/div>\n  ","\n    <div class=\"panel-meta\">\n      <span>互联网团队<\/span>\n      <span>产品经理<\/span>\n    <\/div>\n    <h3>在保险产品、风险和运营一线建立业务判断，理解产品落地背后的约束。<\/h3>\n    <p class=\"panel-proof\">独立策划并上线 APP 端活动，累计参与用户 1000+，带动访问量提升 60%+。<\/p>\n    <div class=\"tag-row\"><span class=\"tag\">产品方案<\/span><span class=\"tag\">风险管理<\/span><span class=\"tag\">线上运营<\/span><span class=\"tag\">数据监控<\/span><\/div>\n    <div class=\"evidence-list\">\n      \n        <section class=\"evidence-item\">\n          <h4>产品方案设计<\/h4>\n          <p>根据行业动态和渠道需求，完成 8 份竞品分析，独立设计服务型家财险、细分场景的文旅类保险等 4 款产品的方案和内容，开发多个个人出行场景的取消与延误条款。<\/p>\n        <\/section>\n      \n        <section class=\"evidence-item\">\n          <h4>费率测算与风险管理<\/h4>\n          <p>完成新产品风险定价，协同个非部、法律部确定产品形态和规则，制定风险管理方案，建立风险预警机制。<\/p>\n        <\/section>\n      \n        <section class=\"evidence-item\">\n          <h4>产品运营管理<\/h4>\n          <p>统筹管理互联网中小平台在售产品，搭建销售数据和赔付率监控表，进行产品测试，协助解决系统对接问题，优化客诉处理流程。<\/p>\n        <\/section>\n      \n        <section class=\"evidence-item\">\n          <h4>从 0 到 1 建立 APP 线上运营能力<\/h4>\n          <p>在团队没有先例的情况下，独立策划并上线 APP 端活动，累计参与用户 1000+，带动访问量提升 60%+，保费周环比提升 40%+。<\/p>\n        <\/section>\n      \n    <\/div>\n  "];
+  const projectPanels = ["\n    <div class=\"case-panel-head\">\n      <div>\n        <p class=\"case-type\">产品经理<\/p>\n        <h3>保险合规审查多 Agent 协同系统<\/h3>\n      <\/div>\n      <div class=\"tag-row\"><span class=\"tag\">合规审查<\/span><span class=\"tag\">Multi-Agent<\/span><span class=\"tag\">Workflow / RAG<\/span><span class=\"tag\">Prompt 迭代<\/span><\/div>\n    <\/div>\n    <p class=\"case-hook\">把合规审查从人工经验整理成可复用的 AI 审查链路。<\/p>\n    <div class=\"case-steps\">\n      \n        <section class=\"case-step\">\n          <span>01<\/span>\n          <h4>业务问题<\/h4>\n          <p>保险条款、营销文案等材料审查依赖人工经验，效率低，标准难统一。<\/p>\n        <\/section>\n      \n        <section class=\"case-step\">\n          <span>02<\/span>\n          <h4>产品拆解<\/h4>\n          <p>把审查目标、风险判断依据、修改建议和报告输出拆成分阶段流程。<\/p>\n        <\/section>\n      \n        <section class=\"case-step\">\n          <span>03<\/span>\n          <h4>验证推进<\/h4>\n          <p>基于客户条款样本和同类材料，完成 4 版核心提示词迭代与测试优化。<\/p>\n        <\/section>\n      \n        <section class=\"case-step\">\n          <span>04<\/span>\n          <h4>结果沉淀<\/h4>\n          <p>单份材料审查时间缩短到 30 分钟内，在 3 家以上客户试点中获得认可。<\/p>\n        <\/section>\n      \n    <\/div>\n  ","\n    <div class=\"case-panel-head\">\n      <div>\n        <p class=\"case-type\">产品经理<\/p>\n        <h3>销售赋能智能体<\/h3>\n      <\/div>\n      <div class=\"tag-row\"><span class=\"tag\">销售赋能<\/span><span class=\"tag\">智能问答<\/span><span class=\"tag\">内容创作<\/span><span class=\"tag\">智能陪练<\/span><\/div>\n    <\/div>\n    <p class=\"case-hook\">把 AI 能力从合规审查迁移到销售支持和代理人培养场景。<\/p>\n    <div class=\"case-steps\">\n      \n        <section class=\"case-step\">\n          <span>01<\/span>\n          <h4>业务问题<\/h4>\n          <p>培训、知识、内容和客户沟通分散在不同系统与动作里。<\/p>\n        <\/section>\n      \n        <section class=\"case-step\">\n          <span>02<\/span>\n          <h4>产品拆解<\/h4>\n          <p>将 AI 定位为销售过程中的连续辅助能力，而不是单一问答入口。<\/p>\n        <\/section>\n      \n        <section class=\"case-step\">\n          <span>03<\/span>\n          <h4>验证推进<\/h4>\n          <p>围绕营销内容创作、行业化智能问答、智能陪练等核心场景进行方案验证。<\/p>\n        <\/section>\n      \n        <section class=\"case-step\">\n          <span>04<\/span>\n          <h4>结果沉淀<\/h4>\n          <p>形成面向寿险代理人培养与展业的销售赋能方案，并推动与传统业务系统衔接。<\/p>\n        <\/section>\n      \n    <\/div>\n  "];
+
+  function activate(buttons, panel, panels, index) {
+    if (!panel || !panels[index]) return;
+    panel.innerHTML = panels[index];
+    buttons.forEach((button, buttonIndex) => {
+      const active = buttonIndex === index;
+      button.classList.toggle('is-active', active);
+      button.setAttribute('aria-pressed', String(active));
+    });
+  }
+
+  const experiencePanel = document.querySelector('#experience-panel');
+  document.addEventListener('click', event => {
+    const button = event.target.closest?.('[data-experience-index]');
+    if (!button) return;
+    const buttons = Array.from(document.querySelectorAll('[data-experience-index]'));
+    activate(buttons, experiencePanel, experiencePanels, Number(button.dataset.experienceIndex));
+  });
+
+  const projectPanel = document.querySelector('#case-panel');
+  document.addEventListener('click', event => {
+    const button = event.target.closest?.('[data-project-index]');
+    if (!button) return;
+    const buttons = Array.from(document.querySelectorAll('[data-project-index]'));
+    activate(buttons, projectPanel, projectPanels, Number(button.dataset.projectIndex));
+  });
+})();
+
+    </script>
+</body>
+</html>
