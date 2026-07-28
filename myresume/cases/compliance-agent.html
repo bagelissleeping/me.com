@@ -1,0 +1,217 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>审查 Agent Case Study｜张慧</title>
+    <meta
+      name="description"
+      content="审查 Agent 产品案例：从 Prompt 工作流验证、规则知识沉淀与评测优化，演进到自动规则匹配、平台化治理和规则自进化。"
+    />
+    <link rel="stylesheet" href="./case-study.css" />
+  </head>
+  <body>
+    <a class="skip-link" href="#main">跳到正文</a>
+
+    <header class="case-header">
+      <a href="../index.html#projects">← 返回个人网站</a>
+      <span>CASE 01 / AI REVIEW AGENT</span>
+    </header>
+
+    <main class="case-main" id="main">
+      <section class="case-hero">
+        <div>
+          <p class="eyebrow">保险合规审查 · 产品路线与方法</p>
+          <h1>从“能审”到“可治理”的审查 Agent。</h1>
+          <p class="case-lede">
+            我围绕规则沉淀、效果评测、自动匹配和版本治理规划产品演进，让一次性的模型能力逐步成为可评测、可追溯、可持续更新的合规智能平台。
+          </p>
+        </div>
+        <aside class="metric-rail" aria-label="项目证据">
+          <div class="metric">
+            <span>规则沉淀</span>
+            <strong>约 100 条</strong>
+          </div>
+          <div class="metric">
+            <span>早期评测集</span>
+            <strong>10 份标准条款<br />+ 50 条种子样本</strong>
+          </div>
+          <div class="metric">
+            <span>业务结果</span>
+            <strong>1–2 小时<br />→ 30 分钟内</strong>
+          </div>
+        </aside>
+      </section>
+
+      <p class="disclosure">
+        本案例涉及客户保密要求，仅展示脱敏后的产品方法、本人负责范围及聚合结果；不包含客户名称、真实界面、业务数据和内部文档。流程与路线均为基于实际项目重新整理的概念示意。
+      </p>
+
+      <section class="case-section" aria-labelledby="problem-title">
+        <div class="section-heading">
+          <p class="section-label">01 / Problem</p>
+          <div>
+            <h2 id="problem-title">真正的问题不是生成报告，而是让审查标准能够被模型稳定执行。</h2>
+            <p>
+              保险条款、营销材料等内容依赖人工逐段审查。规则分散、判断依赖经验、结果难以复用；如果只把规则原文直接放入 Prompt，系统虽然可以快速验证，但难维护、难评测，也容易出现结果波动。
+            </p>
+          </div>
+        </div>
+
+        <div class="two-column">
+          <article class="editorial-block">
+            <p class="section-label">表面需求</p>
+            <h3>让大模型自动发现材料中的风险问题。</h3>
+            <p>这个目标能验证模型能力，却不能直接形成稳定产品：规则如何适用、为什么命中、谁来复核、规则变化后如何回归，都没有被解决。</p>
+          </article>
+          <article class="editorial-block">
+            <p class="section-label">产品问题</p>
+            <h3>把法规和人工经验转化为可执行、可评测、可治理的审查链路。</h3>
+            <p>产品重点从“一次审查结果”转向规则资产、评测闭环、人机责任边界和多客户场景下的平台治理。</p>
+          </article>
+        </div>
+      </section>
+
+      <section class="case-section" aria-labelledby="roadmap-title">
+        <div class="section-heading">
+          <p class="section-label">02 / Roadmap</p>
+          <div>
+            <h2 id="roadmap-title">五个版本，不是堆功能，而是逐步降低产品的不确定性。</h2>
+            <p>路线从“验证可行”依次走向“形成资产、建立评测、平台治理、持续进化”。V0–V2 已形成基础，当前重点是 V3，V4 为后续规划。</p>
+          </div>
+        </div>
+
+        <div class="timeline" aria-label="V0 到 V4 产品演进">
+          <article class="version">
+            <span class="version-status">已完成 · 可行性</span>
+            <span class="version-no">V0</span>
+            <h3>规则直接注入</h3>
+            <p>用业务 Prompt 与工作流快速验证大模型能否识别风险并进入主审查任务。</p>
+          </article>
+          <article class="version">
+            <span class="version-status">已完成 · 规则资产</span>
+            <span class="version-no">V1</span>
+            <h3>方案与规则库</h3>
+            <p>规则经 LLM 转为审查方案，人工复核后入库，形成轻量规则知识底座。</p>
+          </article>
+          <article class="version">
+            <span class="version-status">已完成 · 效果优化</span>
+            <span class="version-no">V2</span>
+            <h3>评测驱动</h3>
+            <p>建设种子评测集，围绕召回、准确率、Bad Case 和原文定位持续优化。</p>
+          </article>
+          <article class="version current">
+            <span class="version-status">当前阶段 · 平台化</span>
+            <span class="version-no">V3</span>
+            <h3>自动规则匹配</h3>
+            <p>升级知识库与评测集，建设混合规则路由、租户隔离、版本管理和过程追溯。</p>
+          </article>
+          <article class="version future">
+            <span class="version-status">后续规划 · 自进化</span>
+            <span class="version-no">V4</span>
+            <h3>规则持续更新</h3>
+            <p>完成新旧规则对比、影响分析、回归评测、人工复核与版本生效闭环。</p>
+          </article>
+        </div>
+      </section>
+
+      <section class="case-section" aria-labelledby="routing-title">
+        <div class="section-heading">
+          <p class="section-label">03 / Product decision</p>
+          <div>
+            <h2 id="routing-title">V3 采用混合规则路由，在召回质量与算力成本之间做取舍。</h2>
+            <p>不是所有材料都需要直接调用 LLM 判断全部规则。先通过标签和内容检索缩小候选范围，再在必要时进行适用性复核。</p>
+          </div>
+        </div>
+
+        <div class="flow" aria-label="自动规则匹配流程">
+          <div class="flow-step"><span>01</span><strong>识别材料与业务场景</strong></div>
+          <div class="flow-step"><span>02</span><strong>生成标签与场景特征</strong></div>
+          <div class="flow-step"><span>03</span><strong>检索并召回候选规则</strong></div>
+          <div class="flow-step"><span>04</span><strong>LLM 复核规则适用性</strong></div>
+          <div class="flow-step"><span>05</span><strong>进入主审查与人工复核</strong></div>
+        </div>
+      </section>
+
+      <section class="case-section" aria-labelledby="decision-title">
+        <div class="section-heading">
+          <p class="section-label">04 / Decisions</p>
+          <div>
+            <h2 id="decision-title">我关注的不是 Agent 名称，而是产品能否稳定执行、解释和演进。</h2>
+          </div>
+        </div>
+
+        <div class="decision-list">
+          <article class="decision">
+            <span class="decision-index">01</span>
+            <div>
+              <h3>从规则原文转向结构化审查方案</h3>
+              <p>规则原文适合阅读，不一定适合模型直接执行。通过 LLM 生成审查目标、风险依据、分级规则与修改建议，再由人工确认后入库，让规则成为可复用的产品资产。</p>
+            </div>
+          </article>
+          <article class="decision">
+            <span class="decision-index">02</span>
+            <div>
+              <h3>在扩大功能前先建设评测闭环</h3>
+              <p>用标准条款、种子样本和 Bad Case 分析分别观察召回、准确率与原文定位，避免只凭演示效果判断产品质量。</p>
+            </div>
+          </article>
+          <article class="decision">
+            <span class="decision-index">03</span>
+            <div>
+              <h3>把人工复核设计成正式节点</h3>
+              <p>合规场景容错率低。AI 负责规则匹配、初审、依据和建议生成；业务人员负责高风险确认、例外处理与规则正式生效。</p>
+            </div>
+          </article>
+          <article class="decision">
+            <span class="decision-index">04</span>
+            <div>
+              <h3>从客户功能进一步抽象平台治理</h3>
+              <p>多租户隔离、规则适用范围、历史版本和审查留痕不是后台附加项，而是产品规模化服务不同金融机构的前置条件。</p>
+            </div>
+          </article>
+        </div>
+      </section>
+
+      <section class="case-section" aria-labelledby="proof-title">
+        <div class="section-heading">
+          <p class="section-label">05 / Evidence & reflection</p>
+          <div>
+            <h2 id="proof-title">已有结果证明方向可行，下一步要证明它可以持续治理和规模化复制。</h2>
+          </div>
+        </div>
+
+        <div class="proof-grid">
+          <article class="proof-panel">
+            <h3>已经验证</h3>
+            <ul>
+              <li>完成从规则直接注入到规则知识底座与早期评测集的演进。</li>
+              <li>主审查任务的召回、准确率与原文定位能力经过多轮优化。</li>
+              <li>单份材料审查时间从 1–2 小时缩短到 30 分钟内。</li>
+              <li>在 3 家以上保险行业客户的 POC 演示中获得业务认可。</li>
+            </ul>
+          </article>
+          <article class="proof-panel light">
+            <h3>仍需继续验证</h3>
+            <ul>
+              <li>自动规则匹配在不同材料与规则规模下的召回边界。</li>
+              <li>规则变化后回归评测能否稳定拦截效果退化。</li>
+              <li>不同客户私有规则与通用规则之间的产品化边界。</li>
+              <li>平台实施成本、使用规模与商业复制效率。</li>
+            </ul>
+          </article>
+        </div>
+      </section>
+
+      <section class="case-cta">
+        <h2>这是一个从模型能力验证，走向规则资产与平台治理的产品过程。</h2>
+        <a href="../index.html#projects">查看其他案例</a>
+      </section>
+
+      <footer class="case-footer">
+        <span>张慧 · AI Product Manager</span>
+        <span>脱敏 Case Study · 2026</span>
+      </footer>
+    </main>
+  </body>
+</html>

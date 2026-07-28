@@ -15,28 +15,45 @@ const experienceNarrative = {
 
 const projectNarrative = {
   'compliance-agent': {
-    title: '保险合规审查多 Agent 协同系统',
-    hook: '把合规审查从人工经验整理成可复用的 AI 审查链路。',
-    tags: ['合规审查', 'Multi-Agent', 'Workflow / RAG', 'Prompt 迭代'],
+    title: '审查 Agent：从可行性验证到规则自进化',
+    hook: '把零散法规和人工审查经验，逐步沉淀为可评测、可追溯、可持续演进的合规智能平台。',
+    tags: ['合规审查', '规则知识库', '评测驱动', '平台化治理'],
     steps: [
-      ['业务问题', '保险条款、营销文案等材料审查依赖人工经验，效率低，标准难统一。'],
-      ['产品拆解', '把审查目标、风险判断依据、修改建议和报告输出拆成分阶段流程。'],
-      ['验证推进', '基于客户条款样本和同类材料，完成 4 版核心提示词迭代与测试优化。'],
-      ['结果沉淀', '单份材料审查时间缩短到 30 分钟内，在 3 家以上客户试点中获得认可。']
-    ]
+      ['从能审到可沉淀', 'V0 验证大模型审查可行性；V1 将规则转为经人工复核的审查方案，沉淀约 100 条轻量规则。'],
+      ['用评测驱动优化', 'V2 基于 10 份标准条款和 50 条种子样本建立早期评测集，围绕召回、准确率和原文定位持续优化。'],
+      ['建设平台化底座', 'V3 通过标签、检索与 LLM 适用性复核自动匹配规则，并补齐版本管理、租户隔离和过程追溯。'],
+      ['让规则持续演进', 'V4 规划新旧规则对比、变更影响分析、小样本回归评测与人工生效闭环。']
+    ],
+    detailUrl: './cases/compliance-agent.html',
+    detailLabel: '查看完整 Case Study'
   },
-  'sales-empowerment-agent': {
-    title: '销售赋能智能体',
-    hook: '把 AI 能力从合规审查迁移到销售支持和代理人培养场景。',
-    tags: ['销售赋能', '智能问答', '内容创作', '智能陪练'],
+  'groovelog': {
+    title: 'GrooveLog：独立开发的舞蹈记录小程序',
+    hook: '从自己的练舞需求出发，独立完成产品定义、核心流程、云端数据隔离与互动介绍站。',
+    tags: ['个人产品', '微信小程序', '独立开发', '完整产品闭环'],
     steps: [
-      ['业务问题', '培训、知识、内容和客户沟通分散在不同系统与动作里。'],
-      ['产品拆解', '将 AI 定位为销售过程中的连续辅助能力，而不是单一问答入口。'],
-      ['验证推进', '围绕营销内容创作、行业化智能问答、智能陪练等核心场景进行方案验证。'],
-      ['结果沉淀', '形成面向寿险代理人培养与展业的销售赋能方案，并推动与传统业务系统衔接。']
-    ]
+      ['真实问题', '课程、feeling 与不同舞室的卡片分散记录，难以同时管理余次、到期日和练舞回顾。'],
+      ['MVP 取舍', '用一条“记课—自动匹配卡片—进入档案”的主路径，串联课程记录、卡包和个人字典。'],
+      ['产品闭环', '支持日历回看、月度与年度统计，让单次记录逐步生长为可回看的个人舞蹈档案。'],
+      ['数据边界', '所有操作经过云函数，并按微信用户身份隔离卡包、字典与课程记录。']
+    ],
+    detailUrl: './cases/groovelog.html',
+    detailLabel: '查看产品案例'
   }
 };
+
+const websiteOnlyProjects = [
+  {
+    id: 'groovelog',
+    name: 'GrooveLog 舞蹈记录小程序',
+    role: '独立产品设计与开发',
+    period: {
+      display: '个人项目'
+    }
+  }
+];
+
+const websiteProjectOrder = ['compliance-agent', 'groovelog'];
 
 const skillGroups = [
   {
@@ -187,10 +204,9 @@ function renderExperience(data) {
 }
 
 function orderProjects(data) {
-  const projects = data.facts.projects || [];
+  const projects = [...(data.facts.projects || []), ...websiteOnlyProjects];
   const byId = new Map(projects.map(project => [project.id, project]));
-  const order = data.display?.website?.projectOrder || projects.map(project => project.id);
-  return order.map(id => byId.get(id)).filter(Boolean);
+  return websiteProjectOrder.map(id => byId.get(id)).filter(Boolean);
 }
 
 function renderProjectSelector(data) {
@@ -240,6 +256,11 @@ function renderProjectPanel(data) {
         </section>
       `).join('')}
     </div>
+    ${narrative.detailUrl ? `
+      <div class="case-actions">
+        <a class="primary-link" href="${escapeHtml(narrative.detailUrl)}">${escapeHtml(narrative.detailLabel || '查看完整案例')} <span aria-hidden="true">↗</span></a>
+      </div>
+    ` : ''}
   `;
 }
 
