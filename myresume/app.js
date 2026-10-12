@@ -1,341 +1,304 @@
-const DATA_URL = '../assets/resume.json';
-
-const experienceNarrative = {
-  'fsp-ai-pm': {
-    thesis: '从复杂系统中识别 AI 产品机会，并推进到 Demo、试点和客户沟通。',
-    focus: ['AI 产品孵化', '复杂流程抽象', 'Demo 验证', '客户试点'],
-    proof: '把隐性业务需求整理成独立产品机会，主导从方案设计、技术选型到 Demo 落地的全过程。'
-  },
-  'picc-product-manager': {
-    thesis: '在保险产品、风险和运营一线建立业务判断，理解产品落地背后的约束。',
-    focus: ['产品方案', '风险管理', '线上运营', '数据监控'],
-    proof: '独立策划并上线 APP 端活动，累计参与用户 1000+，带动访问量提升 60%+。'
+(() => {
+  document.documentElement.classList.add('js');
+  const motion = matchMedia('(prefers-reduced-motion: reduce)');
+  const story = document.querySelector('.thread-story');
+  const stage = document.querySelector('[data-story-stage]');
+  const canvas = document.querySelector('#story-thread');
+  const context = canvas?.getContext('2d');
+  const frames = [...document.querySelectorAll('[data-frame]')];
+  const projectLinks = [...document.querySelectorAll('[data-project-link]')];
+  const markers = [...document.querySelectorAll('[data-marker]')];
+  const next = document.querySelector('[data-story-next]');
+  const status = document.querySelector('[data-story-status]');
+  const position = document.querySelector('[data-story-position]');
+  const clamp = (x, min = 0, max = 1) => Math.max(min, Math.min(max, x));
+  const smooth = x => { const v = clamp(x); return v * v * (3 - 2 * v); };
+  let progress = 0;
+  let current = -1;
+  let width = 0;
+  let height = 0;
+  let frame = 0;
+  let endpoints = [];
+  const pointer = { x: 0, y: 0, active: false };
+  const control = [
+    [.13,.10],[.30,.23],[.76,.16],[.88,.40],[.45,.70],[.30,.43],
+    [.53,.20],[.81,.56],[.63,.79],[.35,.50],[.43,.27],[.91,.31],
+    [.73,.67],[.35,.72],[.25,.43],[.69,.17],[.82,.43],[.53,.74],
+    [.40,.49],[.80,.24],[.94,.51],[.52,.68],[.32,.30],[.72,.35],
+    [.80,.66],[.46,.81],[.28,.57],[.61,.28],[.89,.38],[.68,.70],
+    [.39,.64],[.48,.38],[.80,.53],[.67,.76]
+  ];
+  function sample(u) {
+    const t = u * (control.length - 1);
+    const i = Math.floor(t);
+    const f = t - i;
+    const p0 = control[Math.max(0, i - 1)];
+    const p1 = control[Math.min(i, control.length - 1)];
+    const p2 = control[Math.min(i + 1, control.length - 1)];
+    const p3 = control[Math.min(i + 2, control.length - 1)];
+    return [0, 1].map(axis => 0.5 * (2 * p1[axis] + (-p0[axis] + p2[axis]) * f +
+      (2*p0[axis]-5*p1[axis]+4*p2[axis]-p3[axis])*f*f +
+      (-p0[axis]+3*p1[axis]-3*p2[axis]+p3[axis])*f*f*f));
   }
-};
-
-const projectNarrative = {
-  'compliance-agent': {
-    title: '审查 Agent：从可行性验证到规则自进化',
-    hook: '把零散法规和人工审查经验，逐步沉淀为可评测、可追溯、可持续演进的合规智能平台。',
-    tags: ['合规审查', '规则知识库', '评测驱动', '平台化治理'],
-    steps: [
-      ['从能审到可沉淀', 'V0 验证大模型审查可行性；V1 将规则转为经人工复核的审查方案，沉淀约 100 条轻量规则。'],
-      ['用评测驱动优化', 'V2 基于 10 份标准条款和 50 条种子样本建立早期评测集，围绕召回、准确率和原文定位持续优化。'],
-      ['建设平台化底座', 'V3 通过标签、检索与 LLM 适用性复核自动匹配规则，并补齐版本管理、租户隔离和过程追溯。'],
-      ['让规则持续演进', 'V4 规划新旧规则对比、变更影响分析、小样本回归评测与人工生效闭环。']
-    ],
-    detailUrl: './cases/compliance-agent.html',
-    detailLabel: '查看完整 Case Study'
-  },
-  'groovelog': {
-    title: 'GrooveLog：独立开发的舞蹈记录小程序',
-    hook: '从自己的练舞需求出发，独立完成产品定义、核心流程、云端数据隔离与互动介绍站。',
-    tags: ['个人产品', '微信小程序', '独立开发', '完整产品闭环'],
-    steps: [
-      ['真实问题', '课程、feeling 与不同舞室的卡片分散记录，难以同时管理余次、到期日和练舞回顾。'],
-      ['MVP 取舍', '用一条“记课—自动匹配卡片—进入档案”的主路径，串联课程记录、卡包和个人字典。'],
-      ['产品闭环', '支持日历回看、月度与年度统计，让单次记录逐步生长为可回看的个人舞蹈档案。'],
-      ['数据边界', '所有操作经过云函数，并按微信用户身份隔离卡包、字典与课程记录。']
-    ],
-    detailUrl: './cases/groovelog.html',
-    detailLabel: '查看产品案例'
+  const thread = Array.from({ length: 481 }, (_, i) => sample(i / 480));
+  function intersection(a, b, c, d) {
+    const ax = b[0] - a[0], ay = b[1] - a[1];
+    const bx = d[0] - c[0], by = d[1] - c[1];
+    const denominator = ax * by - ay * bx;
+    if (Math.abs(denominator) < 0.000001) return null;
+    const cx = c[0] - a[0], cy = c[1] - a[1];
+    const first = (cx * by - cy * bx) / denominator;
+    const second = (cx * ay - cy * ax) / denominator;
+    return first > 0 && first < 1 && second > 0 && second < 1
+      ? [a[0] + ax * first, a[1] + ay * first] : null;
   }
-};
-
-const websiteOnlyProjects = [
-  {
-    id: 'groovelog',
-    name: 'GrooveLog 舞蹈记录小程序',
-    role: '独立产品设计与开发',
-    period: {
-      display: '个人项目'
+  const crossingPairs = [];
+  for (let i = 0; i < thread.length - 1; i++) {
+    for (let j = i + 10; j < thread.length - 1; j++) {
+      if (intersection(thread[i], thread[i + 1], thread[j], thread[j + 1])) crossingPairs.push([i, j]);
     }
   }
-];
-
-const websiteProjectOrder = ['compliance-agent', 'groovelog'];
-
-const skillGroups = [
-  {
-    title: '产品定义',
-    items: data => splitSkills(data.facts.skills?.product)
-  },
-  {
-    title: 'AI 工作流',
-    items: data => splitSkills(data.facts.skills?.agentWorkflow)
-  },
-  {
-    title: '验证推进',
-    items: data => [
-      ...splitSkills(data.facts.skills?.aiValidation),
-      '深度使用 Cursor、Claude Code、Codex 等 AI 工具进行原型与 Demo 快速验证'
-    ]
-  },
-  {
-    title: '行业洞察',
-    items: () => [
-      '能深入行业现场形成自己的观察',
-      '能将行业规则与流程抽象为 AI 可执行链路'
-    ]
-  },
-  {
-    title: '证书技能',
-    items: () => [
-      '北美准精算师考试通过两门（P、FM）',
-      '证券从业资格证',
-      '英语六级'
-    ]
+  const portrait = () => innerWidth <= 760 && innerHeight > 600;
+  function ordered(u) {
+    const mobile = portrait();
+    const final = smooth((progress - 0.80) / 0.18);
+    const base = mobile ? 0.10 + 0.04 * final : 0.13;
+    const span = mobile ? 0.35 + 0.35 * final : 0.70;
+    const turn = u > .72 && u < .96 ? (u - .72) / .24 : null;
+    const loopX = turn === null ? 0 : .09 * (1 - Math.cos(turn * Math.PI * 2));
+    const loopY = turn === null ? 0 : span * .06 * Math.sin(turn * Math.PI * 2);
+    return [(mobile ? .13 : .18) + loopX, base + u * span + loopY];
   }
-];
-
-let resumeData = null;
-let activeExperience = 0;
-let activeProject = 0;
-let interactionsBound = false;
-
-function $(selector) {
-  return document.querySelector(selector);
-}
-
-function escapeHtml(value) {
-  return String(value ?? '')
-    .replaceAll('&', '&amp;')
-    .replaceAll('<', '&lt;')
-    .replaceAll('>', '&gt;')
-    .replaceAll('"', '&quot;')
-    .replaceAll("'", '&#39;');
-}
-
-function splitHighlight(value) {
-  const [label, ...rest] = String(value || '').split('：');
-  return {
-    label: rest.length ? label.trim() : '关键动作',
-    body: rest.length ? rest.join('：').trim() : String(value || '').trim()
-  };
-}
-
-function splitSkills(value) {
-  return String(value || '')
-    .split(/[、；;]/)
-    .map(item => item.trim())
-    .filter(Boolean);
-}
-
-function renderTags(items) {
-  return items.map(item => `<span class="tag">${escapeHtml(item)}</span>`).join('');
-}
-
-function hideLoadState() {
-  const node = $('#load-state');
-  if (node) node.classList.add('is-hidden');
-}
-
-function setLoadState(message, isError = false) {
-  const node = $('#load-state');
-  if (!node) return;
-  node.textContent = message;
-  node.classList.toggle('is-error', isError);
-}
-
-async function loadResume() {
-  const response = await fetch(DATA_URL, { cache: 'no-store' });
-  if (!response.ok) throw new Error(`数据读取失败: ${response.status}`);
-  return response.json();
-}
-
-function renderEducation(data) {
-  const items = data.facts.education || [];
-  $('#education-stage').innerHTML = items.map((item, index) => `
-    <article class="education-row reveal-item">
-      <span class="education-index">${String(index + 1).padStart(2, '0')}</span>
-      <div>
-        <h3>${escapeHtml(item.school)}</h3>
-        <p>${escapeHtml(item.degree)} · ${escapeHtml(item.major)}</p>
-      </div>
-      <time>${escapeHtml(item.period)}</time>
-    </article>
-  `).join('');
-}
-
-function renderExperienceTabs(data) {
-  const experiences = data.facts.experiences || [];
-  $('#experience-tabs').innerHTML = experiences.map((item, index) => {
-    const narrative = experienceNarrative[item.id] || {};
-    return `
-      <button class="experience-tab ${index === activeExperience ? 'is-active' : ''}" type="button" data-experience-index="${index}" aria-pressed="${index === activeExperience}">
-        <span>${escapeHtml(item.period?.display || '')}</span>
-        <strong>${escapeHtml(item.company)}</strong>
-        <em>${escapeHtml(narrative.thesis || item.summary)}</em>
-      </button>
-    `;
-  }).join('');
-}
-
-function renderExperiencePanel(data) {
-  const experiences = data.facts.experiences || [];
-  const item = experiences[activeExperience];
-  if (!item) return;
-
-  const narrative = experienceNarrative[item.id] || {};
-  const points = (item.highlights || []).map(splitHighlight);
-
-  $('#experience-panel').innerHTML = `
-    <div class="panel-meta">
-      <span>${escapeHtml(item.department || '')}</span>
-      <span>${escapeHtml(item.role || '')}</span>
-    </div>
-    <h3>${escapeHtml(narrative.thesis || item.summary)}</h3>
-    <p class="panel-proof">${escapeHtml(narrative.proof || item.summary)}</p>
-    <div class="tag-row">${renderTags(narrative.focus || points.map(point => point.label).slice(0, 4))}</div>
-    <div class="evidence-list">
-      ${points.map(point => `
-        <section class="evidence-item">
-          <h4>${escapeHtml(point.label)}</h4>
-          <p>${escapeHtml(point.body)}</p>
-        </section>
-      `).join('')}
-    </div>
-  `;
-}
-
-function renderExperience(data) {
-  renderExperienceTabs(data);
-  renderExperiencePanel(data);
-}
-
-function orderProjects(data) {
-  const projects = [...(data.facts.projects || []), ...websiteOnlyProjects];
-  const byId = new Map(projects.map(project => [project.id, project]));
-  return websiteProjectOrder.map(id => byId.get(id)).filter(Boolean);
-}
-
-function renderProjectSelector(data) {
-  const projects = orderProjects(data);
-  $('#case-selector').innerHTML = projects.map((project, index) => {
-    const narrative = projectNarrative[project.id] || {};
-    return `
-      <button class="case-button ${index === activeProject ? 'is-active' : ''}" type="button" data-project-index="${index}" aria-pressed="${index === activeProject}">
-        <span>${escapeHtml(project.period?.display || '场景验证')}</span>
-        <strong>${escapeHtml(narrative.title || project.name)}</strong>
-      </button>
-    `;
-  }).join('');
-}
-
-function renderProjectPanel(data) {
-  const projects = orderProjects(data);
-  const project = projects[activeProject];
-  if (!project) return;
-
-  const narrative = projectNarrative[project.id] || {
-    title: project.name,
-    hook: project.background,
-    tags: [project.role].filter(Boolean),
-    steps: [
-      ['背景', project.background],
-      ['动作', (project.highlights || []).join(' ')],
-      ['结果', (project.results || []).join(' ')]
-    ]
-  };
-
-  $('#case-panel').innerHTML = `
-    <div class="case-panel-head">
-      <div>
-        <p class="case-type">${escapeHtml(project.role || '产品经理')}</p>
-        <h3>${escapeHtml(narrative.title)}</h3>
-      </div>
-      <div class="tag-row">${renderTags(narrative.tags || [])}</div>
-    </div>
-    <p class="case-hook">${escapeHtml(narrative.hook)}</p>
-    <div class="case-steps">
-      ${narrative.steps.map(([title, body], index) => `
-        <section class="case-step">
-          <span>${String(index + 1).padStart(2, '0')}</span>
-          <h4>${escapeHtml(title)}</h4>
-          <p>${escapeHtml(body)}</p>
-        </section>
-      `).join('')}
-    </div>
-    ${narrative.detailUrl ? `
-      <div class="case-actions">
-        <a class="primary-link" href="${escapeHtml(narrative.detailUrl)}">${escapeHtml(narrative.detailLabel || '查看完整案例')} <span aria-hidden="true">↗</span></a>
-      </div>
-    ` : ''}
-  `;
-}
-
-function renderProjects(data) {
-  renderProjectSelector(data);
-  renderProjectPanel(data);
-}
-
-function renderCapabilities(data) {
-  $('#capability-canvas').innerHTML = skillGroups.map((group, index) => {
-    const items = group.items(data).filter(Boolean).slice(0, 7);
-    return `
-      <article class="capability-tile reveal-item" data-order="${String(index + 1).padStart(2, '0')}">
-        <h3>${escapeHtml(group.title)}</h3>
-        <div class="tag-row">${renderTags(items)}</div>
-      </article>
-    `;
-  }).join('');
-}
-
-function bindInteractions() {
-  if (interactionsBound) return;
-  interactionsBound = true;
-
-  document.addEventListener('click', event => {
-    const button = event.target.closest?.('[data-experience-index]');
-    if (!button || !resumeData) return;
-    activeExperience = Number(button.dataset.experienceIndex);
-    renderExperience(resumeData);
-  });
-
-  document.addEventListener('click', event => {
-    const button = event.target.closest?.('[data-project-index]');
-    if (!button || !resumeData) return;
-    activeProject = Number(button.dataset.projectIndex);
-    renderProjects(resumeData);
-  });
-}
-
-function bindReveal() {
-  const items = document.querySelectorAll('.reveal-item');
-  if (!('IntersectionObserver' in window)) {
-    items.forEach(item => item.classList.add('is-visible'));
-    return;
+  function computeGeometry() {
+    if (!canvas || !context) return;
+    const box = canvas.getBoundingClientRect();
+    width = box.width;
+    height = box.height;
+    const ratio = Math.min(devicePixelRatio || 1, 2);
+    canvas.width = Math.round(width * ratio);
+    canvas.height = Math.round(height * ratio);
+    context.setTransform(ratio, 0, 0, ratio, 0, 0);
+    endpoints = projectLinks.map(link => {
+      const title = link.querySelector('h3').getBoundingClientRect();
+      return [title.left - box.left - 14, title.top - box.top + title.height / 2];
+    });
   }
-
-  const observer = new IntersectionObserver(entries => {
-    entries.forEach(entry => {
-      if (entry.isIntersecting) {
-        entry.target.classList.add('is-visible');
-        observer.unobserve(entry.target);
+  function draw(time = 0) {
+    if (!context || !width || !height || motion.matches) return;
+    context.clearRect(0, 0, width, height);
+    const feedbackRelease = smooth((progress - .69) / .07) * .17;
+    const points = thread.map((knot, i) => {
+      const u = i / 480;
+      const released = smooth((progress * 1.30 + feedbackRelease - u + .025) / .20);
+      const target = ordered(u);
+      const shrink = 1 - progress * .46;
+      let knotX = .62 + (knot[0] - .62) * shrink;
+      let knotY = .46 + (knot[1] - .46) * shrink + progress * .13;
+      if (portrait()) knotY = .24 + (knotY - .46) * .47;
+      if (i < 12) {
+        const mix = smooth(i / 12);
+        knotX = .13 + (knotX - .13) * mix;
+        knotY = .10 + (knotY - .10) * mix;
+      }
+      let x = (knotX + (target[0] - knotX) * released) * width;
+      let y = (knotY + (target[1] - knotY) * released) * height;
+      if (progress < .035 && i < 35) y += Math.sin(time / 700) * 2.3 * (1 - i / 35);
+      if (pointer.active) {
+        const dx = pointer.x - x;
+        const dy = pointer.y - y;
+        const force = Math.max(0, 1 - Math.hypot(dx, dy) / 125) * .13 * (1 - released);
+        x += dx * force;
+        y += dy * force;
+      }
+      return [x, y];
+    });
+    context.lineCap = 'round';
+    context.lineJoin = 'round';
+    context.beginPath();
+    points.forEach(([x, y], i) => i ? context.lineTo(x, y) : context.moveTo(x, y));
+    context.strokeStyle = '#325bd6';
+    context.lineWidth = 2.6;
+    context.stroke();
+    crossingPairs.forEach(([i, j]) => {
+      const crossing = intersection(points[i], points[i + 1], points[j], points[j + 1]);
+      if (!crossing) return;
+      const dx = points[j + 1][0] - points[j][0];
+      const dy = points[j + 1][1] - points[j][1];
+      const length = Math.hypot(dx, dy) || 1;
+      context.beginPath();
+      context.moveTo(crossing[0] - dx / length * 5, crossing[1] - dy / length * 5);
+      context.lineTo(crossing[0] + dx / length * 5, crossing[1] + dy / length * 5);
+      context.strokeStyle = '#f4f3ef';
+      context.lineWidth = 6;
+      context.stroke();
+      context.strokeStyle = '#325bd6';
+      context.lineWidth = 2.6;
+      context.stroke();
+    });
+    const start = points[0];
+    context.beginPath();
+    context.arc(start[0], start[1], 5.5, 0, Math.PI * 2);
+    context.fillStyle = '#f4f3ef';
+    context.fill();
+    context.strokeStyle = '#325bd6';
+    context.lineWidth = 2;
+    context.stroke();
+    markers.forEach((marker, i) => {
+      const point = ordered(.05 + i * .235);
+      marker.style.top = (point[1] * height - 10) + 'px';
+      marker.classList.toggle('is-past', progress > .27 + i * .20);
+      if (progress > .27 + i * .20) {
+        context.beginPath();
+        context.arc(point[0] * width, point[1] * height, 3.5, 0, Math.PI * 2);
+        context.fillStyle = '#325bd6';
+        context.fill();
       }
     });
-  }, { threshold: 0.14 });
-
-  items.forEach(item => observer.observe(item));
-}
-
-function render(data) {
-  resumeData = data;
-  renderEducation(data);
-  renderExperience(data);
-  renderProjects(data);
-  renderCapabilities(data);
-  bindInteractions();
-  bindReveal();
-}
-
-loadResume()
-  .then(data => {
-    render(data);
-    hideLoadState();
-  })
-  .catch(error => {
-    console.error(error);
-    setLoadState('简历数据加载失败，请用本地静态服务打开页面。', true);
-    bindReveal();
+    const connection = smooth((progress - .86) / .14);
+    if (connection > 0) {
+      const last = points[points.length - 1];
+      endpoints.forEach(([x,y], index) => {
+        context.save();
+        context.globalAlpha = connection * (index === 2 ? .55 : 1);
+        const controlX = Math.max(last[0] + 45, x - 50);
+        context.beginPath();
+        context.moveTo(last[0], last[1]);
+        context.bezierCurveTo(controlX, last[1], controlX - 16, y, x, y);
+        context.strokeStyle = '#325bd6';
+        context.lineWidth = index === 2 ? 1.4 : 1.8;
+        context.stroke();
+        context.beginPath();
+        context.arc(x, y, 4.5, 0, Math.PI * 2);
+        context.fillStyle = '#f4f3ef';
+        context.fill();
+        context.stroke();
+        context.restore();
+      });
+    }
+  }
+  function update(time = 0) {
+    frame = 0;
+    if (!story || motion.matches) return;
+    const range = story.offsetHeight - stage.offsetHeight;
+    const top = story.getBoundingClientRect().top;
+    const header = document.querySelector('.site-header').offsetHeight;
+    progress = clamp((header - top) / range);
+    const index = progress < .09 ? 0 : progress < .29 ? 1 : progress < .49 ? 2 : progress < .69 ? 3 : progress < .89 ? 4 : 5;
+    if (index !== current) {
+      current = index;
+      stage.dataset.step = String(index);
+      frames.forEach((item, i) => {
+        item.classList.toggle('is-current', i === index);
+        item.setAttribute('aria-hidden', String(i !== index));
+      });
+      stage.classList.toggle('scene-projects', index === 5);
+      const projectsVisible = index === 5;
+      document.querySelector('.project-map').setAttribute('aria-hidden', String(!projectsVisible));
+      projectLinks.forEach(link => link.tabIndex = projectsVisible ? 0 : -1);
+      status.textContent = frames[index].querySelector('h2').textContent;
+      position.textContent = index === 0 ? '从这里开始' : index === 5 ? '线理清了，看看项目' : ['看清问题','划清边界','形成流程','评测迭代'][index - 1];
+      next.innerHTML = (index === 5 ? '再理一次' : index === 4 ? '继续看项目' : '继续拉开') + '<svg class="icon" aria-hidden="true" viewBox="0 0 24 24"><path d="M5 12h14m-6-6 6 6-6 6"/></svg>';
+      computeGeometry();
+    }
+    stage.dataset.progress = progress.toFixed(3);
+    draw(time);
+    if (progress < .035 && !document.hidden && top > -40) frame = requestAnimationFrame(update);
+  }
+  function schedule() {
+    if (!frame) frame = requestAnimationFrame(update);
+  }
+  function goTo(value, behavior = 'smooth') {
+    if (!story) return;
+    if (motion.matches) {
+      const target = value >= .89 ? document.querySelector('.project-map') : story;
+      target.scrollIntoView({ behavior: 'instant', block: 'start' });
+      return;
+    }
+    const header = document.querySelector('.site-header').offsetHeight;
+    const top = scrollY + story.getBoundingClientRect().top - header;
+    scrollTo({ top: top + (story.offsetHeight - stage.offsetHeight) * value, behavior });
+  }
+  function setup() {
+    document.documentElement.classList.toggle('story-enhanced', Boolean(context) && !motion.matches);
+    if (!story) return;
+    if (motion.matches || !context) {
+      frames.forEach(item => { item.removeAttribute('aria-hidden'); item.classList.add('is-current'); });
+      projectLinks.forEach(link => { link.tabIndex = 0; });
+      document.querySelector('.project-map').removeAttribute('aria-hidden');
+      next.hidden = true;
+      return;
+    }
+    next.hidden = false;
+    current = -1;
+    computeGeometry();
+    schedule();
+  }
+  if (story && context) {
+    setup();
+    addEventListener('scroll', schedule, { passive: true });
+    document.addEventListener('visibilitychange', () => {
+      cancelAnimationFrame(frame);
+      frame = 0;
+      if (!document.hidden) schedule();
+    });
+    addEventListener('resize', () => { computeGeometry(); schedule(); }, { passive: true });
+    motion.addEventListener('change', setup);
+    canvas.addEventListener('pointermove', event => {
+      const box = canvas.getBoundingClientRect();
+      pointer.x = event.clientX - box.left;
+      pointer.y = event.clientY - box.top;
+      pointer.active = true;
+      schedule();
+    });
+    canvas.addEventListener('pointerleave', () => { pointer.active = false; schedule(); });
+    next.addEventListener('click', () => goTo(current === 5 ? 0 : [.16,.36,.56,.76,1][current], motion.matches ? 'instant' : 'smooth'));
+    const restore = () => {
+      if (['#projects','#personal','#car-insurance-service','#compliance-agent'].includes(location.hash)) goTo(1, 'instant');
+      else if (performance.getEntriesByType('navigation')[0]?.type === 'back_forward') {
+        try { const saved = JSON.parse(sessionStorage.getItem('zh-thread-progress')); if (saved) goTo(saved.progress, 'instant'); } catch {}
+      }
+      schedule();
+    };
+    addEventListener('load', () => requestAnimationFrame(() => requestAnimationFrame(restore)), { once: true });
+    addEventListener('pageshow', event => { if (event.persisted) restore(); });
+    projectLinks.forEach(link => link.addEventListener('click', () => {
+      sessionStorage.setItem('zh-thread-progress', JSON.stringify({ progress }));
+      history.replaceState(null, '', '#projects');
+    }));
+  }
+  document.addEventListener('click', event => {
+    const anchor = event.target.closest('a[href^="#"]');
+    if (!anchor) return;
+    const hash = anchor.getAttribute('href');
+    const target = document.querySelector(hash);
+    if (!target) return;
+    event.preventDefault();
+    history.pushState(null, '', hash);
+    if (story && ['#projects','#personal','#car-insurance-service','#compliance-agent'].includes(hash)) goTo(1);
+    else {
+      const header = document.querySelector('.site-header').offsetHeight;
+      scrollTo({ top: scrollY + target.getBoundingClientRect().top - header - 18, behavior: motion.matches ? 'instant' : 'smooth' });
+    }
   });
+  addEventListener('hashchange', () => {
+    if (story && ['#projects','#personal'].includes(location.hash)) goTo(1, 'instant');
+  });
+  document.querySelectorAll('[data-route-demo]').forEach(demo => {
+    const buttons = [...demo.querySelectorAll('[data-route-option]')];
+    const output = demo.querySelector('[data-route-output]');
+    buttons.forEach(button => button.addEventListener('click', () => {
+      buttons.forEach(option => option.setAttribute('aria-pressed', String(option === button)));
+      output.querySelector('[data-route-title]').textContent = button.dataset.routeTitle;
+      output.querySelector('[data-route-description]').textContent = button.dataset.routeDescription;
+    }));
+  });
+  document.querySelectorAll('[data-copy-email]').forEach(button => button.addEventListener('click', async () => {
+    const status = document.querySelector('[data-copy-status]');
+    try {
+      await navigator.clipboard.writeText(button.dataset.copyEmail);
+      status.textContent = '邮箱已复制。';
+    } catch {
+      status.textContent = '复制未完成，可选中上方邮箱复制。';
+    }
+  }));
+})();

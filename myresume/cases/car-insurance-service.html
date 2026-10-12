@@ -1,0 +1,27 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>车险AI客服｜智能客服与AI质检｜张慧</title>
+  <meta name="description" content="面向保险经纪公司的车险售后、卡券、理赔、外呼等场景，解决人工回复慢、准确性及口径不一致、人工质检工作量大的问题。">
+  <meta name="theme-color" content="#F4F3EF">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 40 40'%3E%3Crect width='40' height='40' rx='9' fill='%23F4F3EF'/%3E%3Cpath d='M8 29C8 7 29 32 29 12S13 15 32 29' fill='none' stroke='%23325BD6' stroke-width='3'/%3E%3C/svg%3E">
+  <link rel="stylesheet" href="../styles.css">
+  <script src="../app.js" defer></script>
+</head>
+<body class="case-page"><a class="skip-link" href="#main">跳到正文</a>
+<header class="site-header"><div class="page-width">
+  <a class="brand-name" href="../" aria-label="张慧，回到首页">张慧<span class="brand-role">AI 产品经理</span></a>
+  <nav class="site-nav" aria-label="主导航"><a href="../#projects">看项目</a><a href="../#contact">联系</a></nav>
+  <div class="header-actions"><a class="text-link" href="../../PDF/resume-v2-pm.pdf" download="张慧_AI产品经理_简历.pdf">下载简历<svg class="icon" aria-hidden="true" viewBox="0 0 24 24"><path d="M5 12h14m-6-6 6 6-6 6"/></svg></a></div>
+</div></header>
+<main class="page-width" id="main">
+  <div class="case-breadcrumb"><a href="../#projects">职业项目</a><span>/ 车险AI客服</span></div>
+  <header class="case-header"><h1><span class="case-title-part">车险AI客服｜</span><span class="case-title-part">智能客服与AI质检</span></h1><p class="case-question">哪些问题交给AI，哪些留给人？</p><p class="case-meta">2026-07 至今 · 核心模块产品设计 · 系统已上线</p><p class="case-intro">负责客服工作台、意图管理、SOP配置及AI质检的产品逻辑与页面设计，推进需求确认、开发与上线。</p></header>
+  <section class="case-facts" aria-label="项目成果"><div class="metric"><span class="metric-value">94%</span><span class="metric-label">AI命中准确率</span></div><div class="metric"><span class="metric-value">50% → 95%</span><span class="metric-label">质检准确率</span><small class="metric-note">多轮业务 Bad Case 归因与 Prompt 调试</small></div></section>
+  <div class="case-content"><section class="layer"><h2>项目背景</h2><p>面向保险经纪公司的车险售后、卡券、理赔、外呼等场景，解决人工回复慢、准确性及口径不一致、人工质检工作量大的问题。</p></section><section class="layer" id="service-decision"><h2>关键判断</h2><p>按问题可处理程度分配AI与人工：知识库已有答案由AI直接回复，存在相似问题时由AI推荐并交人工确认，复杂问题转人工。针对跨业务共用规则的适配问题，按业务场景调整质检策略。</p></section><section class="layer" id="service-solution"><h2>产品方案</h2><p>设计客服工作台、分层意图与配置化路由，串联SOP配置、槽位收集、Workflow及MCP／外部能力调用；从会话有效性、关键信息、总结和规则入手设计AI质检。</p><div class="route-demo" data-route-demo><p class="flow-note">服务分层流程示意</p><div class="route-options js-only" role="group" aria-label="选择问题类型"><button type="button" data-route-option data-route="direct" data-route-title="AI 直接回复" data-route-description="知识库已有的常见问题，由 AI 直接回复。" aria-pressed="true">知识库已有答案</button><button type="button" data-route-option data-route="assist" data-route-title="AI 推荐，人工确认" data-route-description="存在相似问题时，由 AI 推荐答案，经人工审核后回复。" aria-pressed="false">存在相似问题</button><button type="button" data-route-option data-route="human" data-route-title="人工处理" data-route-description="复杂问题转由人工处理，保留人工判断与服务能力。" aria-pressed="false">复杂问题</button></div><div class="route-outcome" data-route-output aria-live="polite"><h3 data-route-title>AI 直接回复</h3><p data-route-description>知识库已有的常见问题，由 AI 直接回复。</p></div><noscript><p>相似问题：AI 推荐、人工确认；复杂问题：人工处理。</p></noscript></div></section><details class="case-detail-expand"><summary>展开实施细节</summary><ul><li>分层服务机制：负责客服工作台设计，设置“AI直接回复—AI辅助人工—人工处理”链路：知识库已有问题直接召回答案回复；无完全匹配但存在相似问题时推荐回答，由人工确认发送；复杂问题转人工。</li><li>意图识别与路由：设计分层机制，通过 LLM／小模型识别一级意图并提取关键槽位，结合槽位判断二级意图，路由至 FAQ、SOP 或人工；针对售后、卡券、理赔等场景设计差异化意图体系、意图管理页面及配置化路由策略。</li><li>SOP业务执行：设计 SOP 配置逻辑与页面，串联意图触发、槽位收集、Workflow 执行及 MCP／外部能力调用，使客服从问题回答进入具体业务流程执行。</li><li>0-1 AI质检：与客户确认场景问题及质检要点，设计会话有效性判断、关键信息提取、会话总结与质检规则；针对跨业务共用规则的适配问题，按业务场景调整质检策略，完成产品逻辑与页面设计并推动研发落地。</li><li>质检评测与优化：通过多轮业务 Bad Case 归因与 Prompt 调试，将质检准确率从50%提升至95%。</li></ul></details></div>
+  <div class="case-back case-actions"><a class="primary-link" href="../#projects">回到案例总览<svg class="icon" aria-hidden="true" viewBox="0 0 24 24"><path d="M5 12h14m-6-6 6 6-6 6"/></svg></a><a class="text-link" href="../#contact">联系我<svg class="icon" aria-hidden="true" viewBox="0 0 24 24"><path d="M5 12h14m-6-6 6 6-6 6"/></svg></a></div>
+</main><footer class="site-footer page-width"><p>张慧 · 抽丝剥茧，理清问题。</p><a href="../#projects">回到案例总览<svg class="icon" aria-hidden="true" viewBox="0 0 24 24"><path d="M5 12h14m-6-6 6 6-6 6"/></svg></a><span>更新于 2026-10-10</span></footer>
+</body>
+</html>
