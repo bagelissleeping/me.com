@@ -79,41 +79,16 @@ function renderProject(project) {
 }
 
 function renderSkills(skills) {
-  const toBProduct = skills.product || '';
-  const agentWorkflow = skills.agentWorkflow || '';
-  const aiValidation = skills.aiValidation || '';
-  const knowledgeRules = skills.knowledgeRules || '';
-  const toolsCertificates = skills.toolsCertificates || (skills.other || []).join('；');
-
   return `
             <div class="skill-compact-list">
-                <div class="skill-compact-item">
-                    <span class="skill-label">ToB AI 产品</span>
-                    <p class="skill-values">${escapeHtml(toBProduct)}</p>
-                </div>
-                <div class="skill-compact-item">
-                    <span class="skill-label">Agent / Workflow</span>
-                    <p class="skill-values">${escapeHtml(agentWorkflow)}</p>
-                </div>
-                <div class="skill-compact-item">
-                    <span class="skill-label">AI 应用验证</span>
-                    <p class="skill-values">${escapeHtml(aiValidation)}</p>
-                </div>
-                <div class="skill-compact-item">
-                    <span class="skill-label">知识与规则抽象</span>
-                    <p class="skill-values">${escapeHtml(knowledgeRules)}</p>
-                </div>
-                <div class="skill-compact-item">
-                    <span class="skill-label">工具与证书</span>
-                    <p class="skill-values">${escapeHtml(toolsCertificates)}</p>
-                </div>
+                ${[['AI产品', 'aiProducts'], ['产品交付', 'delivery'], ['工具', 'tools'], ['证书', 'certificates']].map(([label, key]) => `<div class="skill-compact-item"><span class="skill-label">${escapeHtml(label)}</span><p class="skill-values">${escapeHtml(skills[key])}</p></div>`).join('\n')}
             </div>`;
 }
 
 function renderPage(data) {
   const basics = data.facts.basics;
   const publish = data.publish || {};
-  const heroHeadline = normalizeText(data.display?.website?.heroHeadline) || basics.title;
+  const heroHeadline = [basics.title, basics.positioning].filter(Boolean).join('｜');
   const summary = normalizeText(data.facts.summary?.raw);
 
   const basicGrid = [
@@ -140,6 +115,7 @@ function renderPage(data) {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>${escapeHtml(basics.name)}｜${escapeHtml(basics.title)}简历</title>
+    <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 40 40'%3E%3Crect width='40' height='40' rx='9' fill='%23F4F3EF'/%3E%3Cpath d='M8 29C8 7 29 32 29 12S13 15 32 29' fill='none' stroke='%23325BD6' stroke-width='3'/%3E%3C/svg%3E">
     <link rel="stylesheet" href="./styles.css">
 </head>
 <body>
@@ -163,11 +139,6 @@ function renderPage(data) {
             <p>${escapeHtml(summary)}</p>
         </section>
 
-        <section class="education">
-            <h2>教育经历</h2>
-            ${education}
-        </section>
-
         <section class="experience">
             <h2>工作经历</h2>
 ${experiences}
@@ -176,6 +147,11 @@ ${experiences}
         <section class="projects">
             <h2>项目经历</h2>
 ${projects}
+        </section>
+
+        <section class="education">
+            <h2>教育经历</h2>
+            ${education}
         </section>
 
         <section class="skills">
@@ -200,7 +176,7 @@ function main() {
   const data = JSON.parse(readFileSync(dataPath, 'utf8'));
   const html = renderPage(data);
   mkdirSync(outputDir, { recursive: true });
-  writeFileSync(outputPath, `${html}\n`, 'utf8');
+  writeFileSync(outputPath, `${html.replace(/[\t ]+$/gm, '')}\n`, 'utf8');
   console.log(`✅ 已生成 ${outputPath}`);
 }
 

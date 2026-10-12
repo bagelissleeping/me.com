@@ -1,0 +1,105 @@
+{
+  "schemaVersion": 2,
+  "generatedAt": "2026-10-12T09:32:50Z",
+  "title": "Design System: 张慧个人网站",
+  "extensions": {
+    "colorMeta": {
+      "paper": { "role": "neutral", "displayName": "纸白", "canonical": "#f4f3ef" },
+      "white": { "role": "neutral", "displayName": "局部白", "canonical": "#fff" },
+      "ink": { "role": "neutral", "displayName": "深墨", "canonical": "#202b33" },
+      "muted": { "role": "neutral", "displayName": "灰墨", "canonical": "#58636b" },
+      "thread-blue": { "role": "primary", "displayName": "解线蓝", "canonical": "#325bd6" },
+      "blue-hover": { "role": "primary", "displayName": "交互深蓝", "canonical": "#2349b6" },
+      "divider": { "role": "neutral", "displayName": "细线灰", "canonical": "#d2d7d5" },
+      "selection": { "role": "neutral", "displayName": "选择浅黄绿", "canonical": "#e9edb5" }
+    },
+    "typographyMeta": {
+      "display": { "displayName": "首页开篇", "purpose": "线头场景的第一句。" },
+      "headline": { "displayName": "工作方法", "purpose": "滚动过程中当前方法的判断句。" },
+      "case-title": { "displayName": "案例标题", "purpose": "独立项目详情页标题。" },
+      "body": { "displayName": "正文", "purpose": "案例解释与联系信息。" },
+      "label": { "displayName": "次级文字", "purpose": "项目阶段、导航及辅助说明。" }
+    },
+    "shadows": [],
+    "motion": [
+      { "name": "method-reveal", "value": "opacity 280ms, transform 280ms", "purpose": "当前方法随滚动阶段出现。" },
+      { "name": "project-reveal", "value": "opacity 300ms, transform 300ms", "purpose": "终点项目链接显现。" },
+      { "name": "reduced-motion", "value": "prefers-reduced-motion: reduce", "purpose": "关闭过渡并显示静态方法与项目。" }
+    ],
+    "breakpoints": [
+      { "name": "compact-desktop", "value": "1020px" },
+      { "name": "mobile", "value": "760px" },
+      { "name": "narrow", "value": "360px" }
+    ]
+  },
+  "components": [
+    {
+      "name": "主操作链接",
+      "kind": "button",
+      "refersTo": "link-primary",
+      "description": "用于下载简历与从案例返回。",
+      "html": "<a class=\"ds-primary-link\" href=\"#\">下载简历 →</a>",
+      "css": ".ds-primary-link{display:inline-flex;align-items:center;justify-content:center;min-height:48px;padding:9px 22px;border:1px solid #325bd6;border-radius:4px;background:#325bd6;color:#fff;text-decoration:none;font:500 16px/1.8 'PingFang SC','Microsoft YaHei',system-ui,sans-serif}.ds-primary-link:hover{background:#2349b6;border-color:#2349b6}.ds-primary-link:focus-visible{outline:2px solid #325bd6;outline-offset:5px}"
+    },
+    {
+      "name": "次操作链接",
+      "kind": "button",
+      "refersTo": "link-secondary",
+      "description": "用于复制邮箱等辅助操作。",
+      "html": "<button class=\"ds-secondary-link\" type=\"button\">复制邮箱</button>",
+      "css": ".ds-secondary-link{display:inline-flex;align-items:center;justify-content:center;min-height:48px;padding:9px 22px;border:1px solid #97a2a9;border-radius:4px;background:transparent;color:#202b33;font:500 16px/1.8 'PingFang SC','Microsoft YaHei',system-ui,sans-serif;cursor:pointer}.ds-secondary-link:hover{border-color:#325bd6;color:#325bd6}.ds-secondary-link:focus-visible{outline:2px solid #325bd6;outline-offset:5px}"
+    },
+    {
+      "name": "页头导航",
+      "kind": "nav",
+      "description": "姓名、项目与联系入口保持轻量，蓝色标记下载动作。",
+      "html": "<nav class=\"ds-nav\" aria-label=\"主导航\"><strong>张慧 <small>AI 产品经理</small></strong><a href=\"#projects\">看项目</a><a href=\"#contact\">联系</a><a class=\"ds-nav-action\" href=\"#resume\">下载简历 →</a></nav>",
+      "css": ".ds-nav{display:flex;align-items:center;gap:30px;min-height:82px;border-bottom:1px solid #d2d7d5;background:#f4f3ef;color:#202b33;font:14px/1.8 'PingFang SC','Microsoft YaHei',system-ui,sans-serif}.ds-nav strong{margin-right:auto;font-size:22px}.ds-nav small{margin-left:10px;color:#58636b;font-size:14px;font-weight:400}.ds-nav a{min-height:44px;display:inline-flex;align-items:center;color:inherit;text-decoration:none}.ds-nav a:hover,.ds-nav .ds-nav-action{color:#325bd6}.ds-nav a:focus-visible{outline:2px solid #325bd6;outline-offset:5px}"
+    },
+    {
+      "name": "解线下一步",
+      "kind": "button",
+      "description": "首页叙事的可点击推进动作。",
+      "html": "<button class=\"ds-story-next\" type=\"button\">拉开这根线 →</button>",
+      "css": ".ds-story-next{min-height:44px;padding:6px 0;border:0;background:transparent;color:#325bd6;text-decoration:underline;text-underline-offset:6px;font:15px/1.8 'PingFang SC','Microsoft YaHei',system-ui,sans-serif;cursor:pointer}.ds-story-next:hover{color:#2349b6}.ds-story-next:focus-visible{outline:2px solid #325bd6;outline-offset:5px}"
+    },
+    {
+      "name": "项目连接入口",
+      "kind": "custom",
+      "description": "终点蓝线连到项目名称、阶段与引题；职业项目先于个人项目。",
+      "html": "<a class=\"ds-project-connection\" href=\"#case\"><span class=\"ds-project-stage\">系统已上线</span><strong>车险AI客服</strong><span class=\"ds-project-intro\">哪些问题交给AI，哪些留给人？</span><span class=\"ds-project-open\">查看项目 →</span></a>",
+      "css": ".ds-project-connection{display:grid;width:fit-content;gap:4px;padding:12px 0;color:#202b33;text-decoration:none;font-family:'PingFang SC','Microsoft YaHei',system-ui,sans-serif}.ds-project-stage,.ds-project-intro{color:#58636b;font-size:14px;line-height:1.7}.ds-project-connection strong{font-size:24px;font-weight:600;line-height:1.4}.ds-project-open{min-height:38px;color:#325bd6;font-size:14px}.ds-project-connection:hover strong{color:#325bd6}.ds-project-connection:focus-visible{outline:2px solid #325bd6;outline-offset:5px}"
+    },
+    {
+      "name": "服务分流选项",
+      "kind": "chip",
+      "refersTo": "route-option",
+      "description": "案例中的流程示意选项，选中状态使用蓝底白字。",
+      "html": "<button class=\"ds-route-option\" type=\"button\" aria-pressed=\"true\">知识库已有答案</button>",
+      "css": ".ds-route-option{min-height:44px;padding:9px 14px;border:1px solid #d2d7d5;border-radius:4px;background:#f4f3ef;color:#202b33;font:14px/1.8 'PingFang SC','Microsoft YaHei',system-ui,sans-serif;cursor:pointer}.ds-route-option:hover{border-color:#325bd6}.ds-route-option[aria-pressed='true']{border-color:#325bd6;background:#325bd6;color:#fff}.ds-route-option:focus-visible{outline:2px solid #325bd6;outline-offset:5px}"
+    }
+  ],
+  "narrative": {
+    "northStar": "抽丝剥茧 · 业务手记",
+    "overview": "纸白像工作纸，墨色承载判断，蓝线呈现把复杂业务逐步理清的过程。首页的同一根 Canvas 线随正常滚动从非对称线团逐段展开，四种方法依次出现，最后分支连接两个职业项目及后置的 GrooveLog 个人项目。详页转为安静的阅读排版；线与节点仍作为内容线索。",
+    "keyCharacteristics": [
+      "大面积纸白留白、原生中文无衬线字和少量线蓝。",
+      "首页侧方文字与连续线团同台；手机图形在上、文字在下。",
+      "真实案例分层阅读，项目阶段、职责和成果按事实呈现。"
+    ],
+    "rules": [
+      { "name": "The One Thread Rule", "body": "蓝色首先表达同一条问题线和可行动路径；不要把它扩展为大面积装饰底色。", "section": "colors" },
+      { "name": "The Short Method Rule", "body": "首页每一方法只用一句判断和一条具体做法；解释与事实进入案例详情。", "section": "typography" }
+    ],
+    "dos": [
+      "Do 保持一根连续线的身份，让方法出现与局部解线同步。",
+      "Do 让滚动、键盘、减少动态效果和无脚本读者都能到达项目与联系方式。",
+      "Do 在案例详情标清项目阶段、职责、数据口径及流程示意性质。"
+    ],
+    "donts": [
+      "Don't 把首页改成履历列表、能力卡网格或独立的选择对话。",
+      "Don't 让蓝线穿过正文或项目文字，或把解线图当作真实业务指标图。",
+      "Don't 为职业项目补造公开 Demo、客户原话、逐轮准确率曲线或未确认的事实。"
+    ]
+  }
+}
