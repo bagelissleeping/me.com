@@ -20,7 +20,7 @@ web
 
 ## Capabilities and Constraints
 
-- 职业主线为车险AI客服与保险合规审查。客服系统已上线，AI命中准确率94%，通过多轮业务 Bad Case 归因与 Prompt 调试使质检准确率50%提升至95%。合规使用 Workflow/RAG，明确 Demo/POC及客户试点。
+- 职业主线为车险AI客服与保险合规审查。客服系统已上线，AI命中准确率94%，通过多轮业务 Bad Case 归因与 Prompt 调试使质检准确率65%提升至95%。合规使用 Workflow/RAG，明确 Demo/POC及客户试点。
 - Cursor、Claude Code、Codex 只在技能中展示，不扩写工具实施案例。
 - GrooveLog 沿用现站真实个人项目内容，放在职业项目之后。
 - 下载最新原版风格简历 PDF。邮箱为18274320789@163.com，不推导电话。

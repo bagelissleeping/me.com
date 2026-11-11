@@ -84,29 +84,30 @@ function personalEntry(project) {
 }
 
 function homePage() {
-  const methods = [
-    ['看清问题', '先看问题发生在哪一步。', '把业务场景、流程与规则梳理清楚。'],
-    ['划清边界', '分清 AI 做什么，哪些判断留给人。', '服务分层，关键判断保留人工确认。'],
-    ['形成流程', '把判断变成能执行的流程。', '把规则落到意图路由、SOP 与 Workflow。'],
-    ['评测迭代', '用 Bad Case 和复测修正方案。', '业务归因、Prompt 调试，再看评测结果。']
-  ];
-  const connections = [...projects, ...personalProjects].map((project, index) => `<a class="project-connection${index === 2 ? ' personal-connection' : ''}" id="${index === 2 ? 'personal' : e(project.id)}" href="${e(projectHref(project))}" data-project-link><span class="project-stage">${e(project.status)}${index === 2 ? ' · 工作之外' : ''}</span><h3>${e(project.shortName || project.name)}</h3><span class="project-intro">${e(project.question)}</span><span class="project-open">查看项目${arrow}</span></a>`).join('');
+  const career = projects.map(project => {
+    const result = project.id === 'car-insurance-service'
+      ? '多轮业务提示词调优与评测 · 质检准确率 65% → 95%'
+      : '4轮业务提示词调优与评测 · 审查准确率 70% → 90%';
+    return `<a class="project-connection" id="${e(project.id)}" href="${e(projectHref(project))}"><span class="project-stage">${e(project.status)} · ${e(project.period?.display)}</span><h3>${e(project.shortName || project.name)}</h3><span class="project-intro">${e(project.question)}</span><span class="project-result">${e(result)}</span><span class="project-open">查看项目${arrow}</span></a>`;
+  }).join('');
+  const personal = personalProjects.map(project => `<a class="project-connection personal-connection" id="personal" href="${e(projectHref(project))}"><span class="project-stage">个人项目 · 工作之外</span><h3>${e(project.shortName || project.name)}</h3><span class="project-intro">${e(project.question)}</span><span class="project-open">查看项目${arrow}</span></a>`).join('');
   return `${head(`${basics.name}｜AI 产品经理 · 抽丝剥茧`, website.heroSummary)}
 <body class="home-page">${header()}
-<main id="main"><h1 class="visually-hidden">${e(basics.name)}的产品工作方法：抽丝剥茧</h1>
-  <section class="thread-story" id="opening" aria-label="随线团逐渐理清产品工作方法">
+<main id="main"><h1 class="visually-hidden">做toB AI产品，先沉入业务场景。</h1>
+  <section class="thread-story" id="opening" aria-label="小猫拨开线团，理清产品工作方法">
     <div class="story-stage page-width" data-story-stage>
       <div class="story-copy">
-        <section class="method-frame is-current" data-frame="0"><h2>先找到线头。</h2><p>往下滑，看看我怎样把业务问题<br class="desktop-break">理成产品方案。</p></section>
-        ${methods.map((method, index) => `<section class="method-frame" data-frame="${index + 1}"><h2>${e(method[1])}</h2><p>${e(method[2])}</p></section>`).join('')}
-        <section class="method-frame" data-frame="5"><h2 id="projects-title">这套方法，<br>用在这些项目里。</h2><p>沿着理开的线，继续看。</p></section>
+        <section class="method-frame is-current" data-frame="0"><h2>做toB AI产品，<br>先沉入业务场景。</h2><p>我做过保险场景的 AI 客服和合规审查，负责产品方案，也负责业务相关提示词的调优与评测。</p></section>
+        <section class="method-frame" data-frame="1"><h2>先弄清问题发生在哪一步。</h2><p>理解场景、流程和规则，才能找到产品的切入点。</p></section>
+        <section class="method-frame" data-frame="2"><h2>分清 AI 的任务与人的判断。</h2><p>让常见问题直接处理，让关键风险和复杂问题有人确认。</p></section>
+        <section class="method-frame" data-frame="3"><h2>让规则进入流程，再用评测修正。</h2><p>围绕业务逻辑多轮调优提示词，依据误判样本复测。</p></section>
       </div>
-      <div class="thread-scene"><canvas id="story-thread" aria-hidden="true"></canvas><div class="method-trail" aria-hidden="true">${methods.map((method, index) => `<span class="method-marker" data-marker="${index}">${e(method[0])}</span>`).join('')}</div></div>
-      <div class="project-map" id="projects" aria-labelledby="projects-title">${connections}</div>
-      <div class="story-controls js-only"><button type="button" class="story-next" data-story-next>拉开这根线${arrow}</button><span class="story-position" data-story-position>从这里开始</span></div>
+      <div class="paper-scene" aria-hidden="true"><div class="paper-wad"></div><div class="paper-sheet" data-paper><i class="paper-crease crease-one"></i><i class="paper-crease crease-two"></i><i class="paper-crease crease-three"></i></div><img class="story-cat" src="./assets/cat-illustration.webp" alt="" width="1536" height="1024" fetchpriority="high"><svg class="yarn-line" viewBox="0 0 800 500" preserveAspectRatio="none" aria-hidden="true"><path d="M150 422 C120 429 114 392 82 415 S29 452 -24 411" fill="none" stroke="#325bd6" stroke-width="5" stroke-linecap="round" pathLength="100"/></svg><div class="yarn-ball"><span></span></div></div>
+      <div class="story-controls js-only"><button type="button" class="story-next" data-story-next>继续看${arrow}</button><span class="story-position" data-story-position>找到线头</span></div>
       <p class="visually-hidden" role="status" data-story-status></p>
     </div>
   </section>
+  <section class="projects-section page-width" id="projects" aria-labelledby="projects-title"><div class="projects-heading"><span>沿着这根线</span><h2 id="projects-title">我做过的项目</h2></div><div class="project-map">${career}</div><div class="personal-heading">工作之外</div><div class="project-map personal-map">${personal}</div></section>
   <section id="contact" class="contact-section page-width" aria-labelledby="contact-title"><h2 id="contact-title">聊聊你的业务问题。</h2><a class="contact-email" href="mailto:${e(basics.email)}">${e(basics.email)}${arrow}</a><div class="contact-actions"><button type="button" class="secondary-link js-only" data-copy-email="${e(basics.email)}">复制邮箱</button><a class="primary-link" href="../PDF/resume-v2-pm.pdf" download="张慧_AI产品经理_简历.pdf">下载简历${arrow}</a><span data-copy-status role="status"></span></div></section>
 </main>${footer()}
 </body>
@@ -148,7 +149,7 @@ function main() {
   write(resolve(ROOT, 'myresume/index.html'), homePage());
   [...projects, ...personalProjects].forEach(project => write(resolve(ROOT, 'myresume/cases', `${project.id}.html`), casePage(project, personalProjectsById.has(project.id))));
   execFileSync(process.execPath, [resolve(ROOT, 'scripts/build-resume.mjs'), 'v2-pm'], { stdio: 'inherit' });
-  const publishFiles = ['index.html', 'assets/resume.json', 'PDF/resume-v2-pm.pdf', 'myresume/index.html', 'myresume/app.js', 'myresume/styles.css', 'v2-pm/index.html', 'v2-pm/styles.css', 'v2-pm/script.js', 'v2-pm/smart-print.js', ...[...projects, ...personalProjects].map(project => `myresume/cases/${project.id}.html`)];
+  const publishFiles = ['index.html', 'assets/resume.json', 'PDF/resume-v2-pm.pdf', 'myresume/index.html', 'myresume/app.js', 'myresume/styles.css', 'myresume/assets/cat-illustration.webp', 'myresume/assets/yarn-ball.webp', 'v2-pm/index.html', 'v2-pm/styles.css', 'v2-pm/script.js', 'v2-pm/smart-print.js', ...[...projects, ...personalProjects].map(project => `myresume/cases/${project.id}.html`)];
   publishFiles.forEach(copy);
   write(resolve(OUTPUT_DIR, '.nojekyll'), '');
   console.log(`站点已生成到 ${OUTPUT_DIR}（${publishFiles.length} 个发布文件）`);
