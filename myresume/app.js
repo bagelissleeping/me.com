@@ -1,137 +1,141 @@
 (() => {
   document.documentElement.classList.add('js');
   const story = document.querySelector('.thread-story');
-  const stage = document.querySelector('[data-story-stage]');
-  const scene = document.querySelector('.paper-scene');
-  const paper = document.querySelector('[data-paper]');
-  const frames = [...document.querySelectorAll('[data-frame]')];
-  const next = document.querySelector('[data-story-next]');
-  const replay = document.querySelector('[data-story-replay]');
-  const position = document.querySelector('[data-story-position]');
-  const status = document.querySelector('[data-story-status]');
-  const catRig = document.querySelector('[data-cat-rig]');
-  const catShadow = document.querySelector('[data-cat-shadow]');
-  const readyCat = document.querySelector('.cat-ready');
-  const pounceCat = document.querySelector('.cat-pounce');
-  const ball = document.querySelector('[data-yarn-ball]');
-  const ballShadow = document.querySelector('[data-ball-shadow]');
-  const thread = document.querySelector('[data-yarn-thread]');
-  const threadSvg = thread?.ownerSVGElement;
-  const reducedMotion = matchMedia('(prefers-reduced-motion: reduce)');
-  const clamp = value => Math.min(1, Math.max(0, value));
-  const ease = (from, to, value) => { const t = clamp((value - from) / (to - from)); return t * t * (3 - 2 * t); };
-  let current = -1;
-  let raf = 0;
-  let motionRaf = 0;
-  let motionPhase = 0;
-  let motionPlayed = false;
-  const folded = [[42, 35], [52, 15], [70, 28], [83, 65], [56, 88], [31, 65]];
-  const open = [[0, 0], [50, 0], [100, 0], [100, 100], [50, 100], [0, 100]];
 
-  function renderMotion(phase) {
-    if (!scene || !catRig || !ball || !thread) return;
-    motionPhase = phase;
-    const width = scene.clientWidth;
-    const height = scene.clientHeight;
-    const launch = ease(.12, .61, phase);
-    const follow = ease(.61, .95, phase);
-    const roll = ease(.58, .96, phase);
-    const air = phase > .14 && phase < .65 ? Math.sin(Math.PI * (phase - .14) / .51) : 0;
-    const catX = -width * (.05 * launch + .13 * follow);
-    const catY = -height * .085 * air;
-    const pose = ease(.22, .25, phase) * (1 - ease(.69, .72, phase));
-    catRig.style.transform = `translate3d(${catX.toFixed(1)}px, ${catY.toFixed(1)}px, 0) rotate(${(-3 * air).toFixed(1)}deg) scale(${(1 + .035 * air).toFixed(3)}, ${(1 - .035 * air).toFixed(3)})`;
-    readyCat.style.opacity = (1 - pose).toFixed(3);
-    pounceCat.style.opacity = pose.toFixed(3);
-    catShadow.style.transform = `translateX(${catX.toFixed(1)}px) scaleX(${(1 - .16 * air).toFixed(3)})`;
-    catShadow.style.opacity = (1 - .5 * air).toFixed(3);
-    const ballX = -width * .10 * roll;
-    const ballScale = 1 - .18 * roll;
-    const ballDrop = width * .06 * (1 - ballScale);
-    ball.style.transform = `translate3d(${ballX.toFixed(1)}px, ${ballDrop.toFixed(1)}px, 0) rotate(${(-640 * roll).toFixed(1)}deg) scale(${ballScale.toFixed(3)})`;
-    ballShadow.style.transform = `translateX(${ballX.toFixed(1)}px) scaleX(${ballScale.toFixed(3)})`;
-    const x = width * (.24 - .10 * roll);
-    const y = height * .85 - 2;
-    const length = width * (.018 + .55 * roll);
-    const wave = Math.min(width * .014, 9) * roll;
-    threadSvg.setAttribute('viewBox', `0 0 ${width} ${height}`);
-    thread.setAttribute('d', `M ${x} ${y} C ${x + length * .12} ${y - wave}, ${x + length * .15} ${y + wave}, ${x + length * .30} ${y} S ${x + length * .50} ${y - wave}, ${x + length * .60} ${y} S ${x + length * .82} ${y + wave}, ${x + length} ${y}`);
-  }
+  if (story) {
+    const stage = story.querySelector('[data-story-stage]');
+    const scene = story.querySelector('[data-thread-scene]');
+    const film = story.querySelector('[data-story-film]');
+    const video = story.querySelector('[data-story-video]');
+    const lead = story.querySelector('[data-thread-lead]');
+    const spine = story.querySelector('[data-thread-spine]');
+    const tip = story.querySelector('[data-thread-tip]');
+    const frames = [...story.querySelectorAll('[data-frame]')];
+    const steps = [...story.querySelectorAll('[data-process-step]')];
+    const next = story.querySelector('[data-story-next]');
+    const replay = story.querySelector('[data-story-replay]');
+    const position = story.querySelector('[data-story-position]');
+    const status = story.querySelector('[data-story-status]');
+    const reducedMotion = matchMedia('(prefers-reduced-motion: reduce)');
+    const clamp = value => Math.min(1, Math.max(0, value));
+    const phase = (value, start, end) => clamp((value - start) / (end - start));
+    const ease = value => value * value * (3 - 2 * value);
+    const labels = ['向下滚动', '业务梳理', '产品设计', '调优评测'];
+    const thresholds = [.463, .679, .894];
+    const finalLead = 'M269 155 C390 155 390 245 210 245 H110 Q70 245 70 280';
+    let raf = 0;
+    let current = -1;
+    let mediaReady = false;
+    let mediaFailed = false;
 
-  function playMotion() {
-    if (reducedMotion.matches) return;
-    cancelAnimationFrame(motionRaf);
-    motionPlayed = true;
-    renderMotion(0);
-    let start;
-    const tick = now => {
-      start ??= now;
-      const phase = clamp((now - start) / 3000);
-      renderMotion(phase);
-      if (phase < 1) motionRaf = requestAnimationFrame(tick);
-    };
-    motionRaf = requestAnimationFrame(tick);
-  }
-
-  function enhance() {
-    const active = Boolean(story && stage && scene && paper && frames.length) && !reducedMotion.matches;
-    document.documentElement.classList.toggle('story-enhanced', active);
-    next.hidden = !active;
-    replay.hidden = !active;
-    if (!active) {
-      cancelAnimationFrame(motionRaf);
-      renderMotion(1);
-      frames.forEach(frame => { frame.removeAttribute('aria-hidden'); frame.classList.add('is-current'); });
-      paper.style.clipPath = '';
-      scene.style.setProperty('--unfold', 1);
-      return;
-    }
-    current = -1;
-    schedule();
-    if (!motionPlayed) Promise.allSettled([readyCat.decode(), pounceCat.decode()]).then(playMotion);
-  }
-
-  function update() {
-    raf = 0;
-    if (!document.documentElement.classList.contains('story-enhanced')) return;
-    const range = story.offsetHeight - stage.offsetHeight;
-    const progress = clamp((Number.parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--story-header')) - story.getBoundingClientRect().top) / Math.max(range, 1));
-    const unfold = clamp(progress / .3);
-    scene.style.setProperty('--unfold', unfold.toFixed(3));
-    paper.style.clipPath = `polygon(${folded.map(([x, y], i) => `${(x + (open[i][0] - x) * unfold).toFixed(1)}% ${(y + (open[i][1] - y) * unfold).toFixed(1)}%`).join(',')})`;
-    const index = progress < .25 ? 0 : progress < .5 ? 1 : progress < .75 ? 2 : 3;
-    if (index !== current) {
+    function setFrame(index) {
+      if (current === index) return;
       current = index;
       frames.forEach((frame, i) => {
         frame.classList.toggle('is-current', i === index);
         frame.setAttribute('aria-hidden', String(i !== index));
       });
-      const labels = ['找到线头', '看清问题', '划清边界', '评测迭代'];
+      next.firstChild.textContent = ['展开线团', '看产品设计', '看调优评测', '查看项目'][index];
       position.textContent = labels[index];
-      next.firstChild.textContent = index === 3 ? '查看项目' : '继续看';
       status.textContent = frames[index].querySelector('h2').textContent;
     }
-  }
 
-  function schedule() {
-    if (!raf) raf = requestAnimationFrame(update);
-  }
+    function draw(path, amount) {
+      const length = path.getTotalLength();
+      path.style.strokeDasharray = length;
+      path.style.strokeDashoffset = length * (1 - amount);
+      path.style.opacity = amount > 0 ? 1 : 0;
+    }
 
-  if (story) {
-    enhance();
-    addEventListener('scroll', schedule, { passive: true });
-    addEventListener('resize', () => { schedule(); renderMotion(motionPhase); }, { passive: true });
-    reducedMotion.addEventListener('change', enhance);
-    replay.addEventListener('click', playMotion);
-    next.addEventListener('click', () => {
-      if (current === 3) {
-        document.querySelector('#projects').scrollIntoView({ behavior: 'smooth', block: 'start' });
-        return;
+    function update() {
+      raf = 0;
+      if (reducedMotion.matches) return;
+      const top = parseFloat(getComputedStyle(stage).top);
+      const progress = clamp((top - story.getBoundingClientRect().top) / (story.offsetHeight - stage.offsetHeight));
+      let ended = mediaFailed;
+      if (mediaReady) {
+        const endTime = video.duration - 1 / 24;
+        const targetTime = Math.round(phase(progress, 0, .30) * endTime * 24) / 24;
+        if (!video.seeking && Math.abs(video.currentTime - targetTime) > 1 / 48) video.currentTime = targetTime;
+        ended = !video.seeking && Math.abs(video.currentTime - endTime) < 1 / 24;
       }
-      const range = story.offsetHeight - stage.offsetHeight;
-      const top = scrollY + story.getBoundingClientRect().top - Number.parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--story-header'));
-      scrollTo({ top: top + range * [.3, .55, .8][Math.max(0, current)], behavior: 'smooth' });
+      const shrink = ended ? ease(phase(progress, .30, .43)) : 0;
+      const scale = 1 - .6 * shrink;
+      const y = 80 * (1 - shrink);
+      film.style.transform = `translateY(${y / 800 * scene.clientWidth}px) scale(${scale})`;
+      // The source video's final yarn loop sits at 84% x / 86% y.
+      // This anchor shares the video's transform so the line stays attached.
+      const anchorX = 800 * .84 * scale;
+      const anchorY = y + 800 * 660 / 1174 * .86 * scale;
+      lead.setAttribute('d', `M${anchorX} ${anchorY} C${anchorX + 121} ${anchorY} 390 245 210 245 H110 Q70 245 70 280`);
+      const leadProgress = ended ? phase(progress, .32, .43) : 0;
+      const spineProgress = ended ? phase(progress, .43, .96) : 0;
+      draw(lead, leadProgress);
+      draw(spine, spineProgress);
+      tip.style.opacity = leadProgress > 0 ? 1 : 0;
+      const point = spineProgress > 0
+        ? spine.getPointAtLength(spine.getTotalLength() * spineProgress)
+        : lead.getPointAtLength(lead.getTotalLength() * leadProgress);
+      tip.setAttribute('cx', point.x);
+      tip.setAttribute('cy', point.y);
+      const index = ended ? thresholds.filter(value => progress >= value).length : 0;
+      steps.forEach((step, i) => {
+        const visible = ended && progress >= thresholds[i];
+        step.classList.toggle('is-visible', visible);
+        step.classList.toggle('is-current', i === index - 1);
+        step.setAttribute('aria-hidden', String(!visible));
+      });
+      setFrame(index);
+      if (index === 0) position.textContent = progress >= .30 && ended ? '拉出线头' : '向下滚动';
+    }
+
+    function schedule() {
+      if (!raf) raf = requestAnimationFrame(update);
+    }
+
+    function configureMotion() {
+      const animated = !reducedMotion.matches;
+      document.documentElement.classList.toggle('story-enhanced', animated);
+      video.pause();
+      current = -1;
+      if (animated) {
+        if (video.preload !== 'auto') { video.preload = 'auto'; video.load(); }
+        schedule();
+      } else {
+        cancelAnimationFrame(raf);
+        raf = 0;
+        film.style.removeProperty('transform');
+        lead.setAttribute('d', finalLead);
+        draw(lead, 1);
+        draw(spine, 1);
+        tip.style.opacity = 0;
+        [...frames, ...steps].forEach(item => item.removeAttribute('aria-hidden'));
+      }
+    }
+
+    function goTo(progress) {
+      const top = parseFloat(getComputedStyle(stage).top);
+      scrollTo({ top: scrollY + story.getBoundingClientRect().top - top + progress * (story.offsetHeight - stage.offsetHeight), behavior: 'smooth' });
+    }
+
+    video.addEventListener('loadedmetadata', () => { mediaReady = true; schedule(); });
+    video.addEventListener('seeked', schedule);
+    video.addEventListener('error', () => {
+      mediaFailed = true;
+      mediaReady = false;
+      film.classList.add('is-still');
+      schedule();
+    }, true);
+    if (video.readyState >= 1) mediaReady = true;
+    addEventListener('scroll', schedule, { passive: true });
+    addEventListener('resize', schedule, { passive: true });
+    reducedMotion.addEventListener('change', configureMotion);
+    replay.addEventListener('click', () => goTo(0));
+    next.addEventListener('click', () => {
+      if (current === 3) document.querySelector('#projects').scrollIntoView({ behavior: 'smooth', block: 'start' });
+      else goTo([.51, .73, .95][current]);
     });
+    configureMotion();
   }
 
   document.querySelectorAll('[data-route-demo]').forEach(demo => {

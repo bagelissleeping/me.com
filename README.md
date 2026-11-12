@@ -19,10 +19,10 @@
 
 ```bash
 node scripts/build-site.mjs
-python -m http.server 8000 --directory dist
+node scripts/preview.mjs
 ```
 
-打开 `http://localhost:8000/myresume/`。无需安装新的前端依赖。
+打开 `http://127.0.0.1:8081/myresume/`。预览服务器支持视频分段读取，可验证滚动跳帧；无需安装新的前端依赖。
 
 ## 内容维护方式
 
@@ -50,7 +50,7 @@ node scripts/export-pdf.mjs v2-pm
 node scripts/build-site.mjs
 ```
 
-这一步会同时重建 `myresume/index.html`、三个案例页和 `v2-pm/index.html`，再复制到 `dist/`。首页在同一个线团上用正常滚动呈现四种产品工作方法，最终连向两个职业项目和 GrooveLog。导航“看项目”可直接跳到终点。减少动态效果或关闭 JavaScript 时，方法和项目改为静态顺序展示；脚本还处理返回进度、详情客服分流示意和邮箱复制。
+这一步会同时重建 `myresume/index.html`、三个案例页和 `v2-pm/index.html`，再复制到 `dist/`。首页滚动先播放用户提供的小猫视频，停在末帧后缩小画面；蓝线从右侧线头延伸，依次呈现业务梳理、产品设计、调优评测，最终进入两个职业项目和 GrooveLog。导航“看项目”可直接跳到终点。减少动态效果或关闭 JavaScript 时，方法和项目改为静态顺序展示；脚本还处理返回进度、详情客服分流示意和邮箱复制。
 
 不要手动维护生成 HTML 中的职业事实。改数据后重新构建，避免首页与详情失步。发布目录不复制项目规范、开发文档、源码脚本或预览图，也不删除已有 `dist/` 内容；当前构建按明确的文件清单覆盖对应发布文件。
 
@@ -81,3 +81,7 @@ node scripts/build-site.mjs
 - 网站、PDF、版本页尽量保持同一份事实口径
 - 外链和相对路径以 GitHub Pages 环境可直接打开为准
 - 修改与本地验证不包含提交、推送或远端发布；这些操作仅按用户明确要求执行
+
+## 首页视频
+
+`myresume/assets/cat-yarn.mp4` 来自用户上传的视频，转为无音轨 H.264、24fps，约 1.5 MB。每 6 帧一个关键帧以支持正反向滚动定位；`cat-yarn-start.webp` 为首屏封面，`cat-yarn-end.webp` 用于静态阅读与减少动态效果。蓝线锚点对应末帧画面的 84% 横向、86% 纵向位置；替换视频时需重新确认锚点。构建脚本负责发布这三个资源。
