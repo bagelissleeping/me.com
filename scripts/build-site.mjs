@@ -84,45 +84,29 @@ function personalEntry(project) {
 }
 
 function homePage() {
-  const career = projects.map(project => {
-    const result = project.id === 'car-insurance-service'
-      ? '多轮业务提示词调优与评测 · 质检准确率 65% → 95%'
-      : '4轮业务提示词调优与评测 · 审查准确率 70% → 90%';
-    return `<a class="project-connection" id="${e(project.id)}" href="${e(projectHref(project))}"><span class="project-stage">${e(project.status)} · ${e(project.period?.display)}</span><h3>${e(project.shortName || project.name)}</h3><span class="project-intro">${e(project.question)}</span><span class="project-result">${e(result)}</span><span class="project-open">查看项目${arrow}</span></a>`;
-  }).join('');
-  const personal = personalProjects.map(project => `<a class="project-connection personal-connection" id="personal" href="${e(projectHref(project))}"><span class="project-stage">个人项目 · 工作之外</span><h3>${e(project.shortName || project.name)}</h3><span class="project-intro">${e(project.question)}</span><span class="project-open">查看项目${arrow}</span></a>`).join('');
+  const methods = [
+    ['看清问题', '先看问题发生在哪一步。', '把业务场景、流程与规则梳理清楚。'],
+    ['划清边界', '分清 AI 做什么，哪些判断留给人。', '服务分层，关键判断保留人工确认。'],
+    ['形成流程', '把判断变成能执行的流程。', '把规则落到意图路由、SOP 与 Workflow。'],
+    ['评测迭代', '用 Bad Case 和复测修正方案。', '业务归因、Prompt 调试，再看评测结果。']
+  ];
+  const connections = [...projects, ...personalProjects].map((project, index) => `<a class="project-connection${index === 2 ? ' personal-connection' : ''}" id="${index === 2 ? 'personal' : e(project.id)}" href="${e(projectHref(project))}" data-project-link><span class="project-stage">${e(project.status)}${index === 2 ? ' · 工作之外' : ''}</span><h3>${e(project.shortName || project.name)}</h3><span class="project-intro">${e(project.question)}</span><span class="project-open">查看项目${arrow}</span></a>`).join('');
   return `${head(`${basics.name}｜AI 产品经理 · 抽丝剥茧`, website.heroSummary)}
 <body class="home-page">${header()}
-<main id="main"><h1 class="visually-hidden">做toB AI产品，先沉入业务场景。</h1>
-  <section class="thread-story" id="opening" aria-label="从小猫解线到业务梳理与产品设计">
+<main id="main"><h1 class="visually-hidden">${e(website.heroHeadline)}</h1>
+  <section class="thread-story" id="opening" aria-label="随线团逐渐理清产品工作方法">
     <div class="story-stage page-width" data-story-stage>
       <div class="story-copy">
-        <section class="method-frame is-current" data-frame="0"><h2>做toB AI产品，<br>先沉入业务场景。</h2><p>我做过保险场景的 AI 客服和合规审查，负责产品方案，也负责业务相关提示词的调优与评测。</p><span class="story-hint">向下滚动，跟着线头看。</span></section>
-        <section class="method-frame" data-frame="1"><span class="method-label">业务梳理</span><h2>把场景、流程<br>与规则梳理清楚。</h2><p>从实际业务问题出发，梳理流程节点、判断依据与异常情况，明确产品需要解决的问题和边界。</p><p class="method-example">在合规审查中，先明确审查目标、风险分级与判定依据，再将规则组织为可复用的审查方案。</p></section>
-        <section class="method-frame" data-frame="2"><span class="method-label">产品设计</span><h2>把业务判断<br>落进产品流程。</h2><p>定义 AI 与人工各自的任务，将规则转为意图路由、SOP 与 Workflow，设计页面、配置逻辑和人工确认节点。</p><p class="method-example">在客服项目中，串联意图识别、槽位收集与业务执行，并区分 AI 直接回复、辅助人工和转人工的处理路径。</p></section>
-        <section class="method-frame" data-frame="3"><span class="method-label">调优评测</span><h2>用业务样本验证，<br>让判断逐轮准确。</h2><p>负责业务规则与判断逻辑相关的提示词调优，通过 Bad Case 归因、修改与复测，持续修正产品表现。</p><p class="method-example">合规审查：4 轮调优，准确率 70% → 90%。<br>客服质检：多轮调优，准确率 65% → 95%。</p></section>
+        <section class="method-frame is-current" data-frame="0"><h2>做toB AI产品，<br>先沉入业务场景。</h2><p>往下滑，看看我怎样把业务问题<br class="desktop-break">理成产品方案。</p></section>
+        ${methods.map((method, index) => `<section class="method-frame" data-frame="${index + 1}"><h2>${e(method[1])}</h2><p>${e(method[2])}</p></section>`).join('')}
+        <section class="method-frame" data-frame="5"><h2 id="projects-title">这套方法，<br>用在这些项目里。</h2><p>沿着理开的线，继续看。</p></section>
       </div>
-      <div class="thread-scene" data-thread-scene>
-        <div class="story-film" data-story-film>
-          <video data-story-video muted playsinline preload="none" poster="./assets/cat-yarn-start.webp" width="1174" height="660" aria-label="小猫扑向蓝色线团并将它拨开，随页面滚动播放"><source src="./assets/cat-yarn.mp4" type="video/mp4"></video>
-          <img class="story-still" src="./assets/cat-yarn-end.webp" alt="小猫拨开蓝色线团，线头连接下方的产品工作过程" width="1174" height="660">
-        </div>
-        <svg class="process-thread" viewBox="0 0 800 620" fill="none" aria-hidden="true">
-          <path data-thread-lead d="M269 155 C390 155 390 245 210 245 H110 Q70 245 70 280"/>
-          <path data-thread-spine d="M70 280 V600"/>
-          <circle class="thread-tip" data-thread-tip cx="70" cy="600" r="5"/>
-        </svg>
-        <ol class="process-steps" aria-label="产品工作过程">
-          <li class="process-step" data-process-step style="--step-y:300"><span class="process-dot" aria-hidden="true"></span><h3>业务梳理</h3><p>场景与流程 · 业务规则 · 问题边界</p></li>
-          <li class="process-step" data-process-step style="--step-y:430"><span class="process-dot" aria-hidden="true"></span><h3>产品设计</h3><p>任务拆解 · Workflow · 人机协作</p></li>
-          <li class="process-step" data-process-step style="--step-y:560"><span class="process-dot" aria-hidden="true"></span><h3>调优评测</h3><p>业务提示词 · Bad Case 归因 · 复测</p></li>
-        </ol>
-      </div>
-      <div class="story-controls js-only"><button type="button" class="story-next" data-story-next>展开线团${arrow}</button><div class="story-control-end"><button type="button" class="story-replay" data-story-replay>重看开场</button><span class="story-position" data-story-position>向下滚动</span></div></div>
+      <div class="thread-scene"><canvas id="story-thread" aria-hidden="true"></canvas><div class="method-trail" aria-hidden="true">${methods.map((method, index) => `<span class="method-marker" data-marker="${index}">${e(method[0])}</span>`).join('')}</div></div>
+      <div class="project-map" id="projects" aria-labelledby="projects-title">${connections}</div>
+      <div class="story-controls js-only"><button type="button" class="story-next" data-story-next>拉开这根线${arrow}</button><span class="story-position" data-story-position>从这里开始</span></div>
       <p class="visually-hidden" role="status" data-story-status></p>
     </div>
   </section>
-  <section class="projects-section page-width" id="projects" aria-labelledby="projects-title"><div class="projects-heading"><span>沿着这根线</span><h2 id="projects-title">我做过的项目</h2></div><div class="project-map">${career}</div><div class="personal-heading">工作之外</div><div class="project-map personal-map">${personal}</div></section>
   <section id="contact" class="contact-section page-width" aria-labelledby="contact-title"><h2 id="contact-title">聊聊你的业务问题。</h2><a class="contact-email" href="mailto:${e(basics.email)}">${e(basics.email)}${arrow}</a><div class="contact-actions"><button type="button" class="secondary-link js-only" data-copy-email="${e(basics.email)}">复制邮箱</button><a class="primary-link" href="../PDF/resume-v2-pm.pdf" download="张慧_AI产品经理_简历.pdf">下载简历${arrow}</a><span data-copy-status role="status"></span></div></section>
 </main>${footer()}
 </body>
@@ -164,7 +148,7 @@ function main() {
   write(resolve(ROOT, 'myresume/index.html'), homePage());
   [...projects, ...personalProjects].forEach(project => write(resolve(ROOT, 'myresume/cases', `${project.id}.html`), casePage(project, personalProjectsById.has(project.id))));
   execFileSync(process.execPath, [resolve(ROOT, 'scripts/build-resume.mjs'), 'v2-pm'], { stdio: 'inherit' });
-  const publishFiles = ['index.html', 'assets/resume.json', 'PDF/resume-v2-pm.pdf', 'myresume/index.html', 'myresume/app.js', 'myresume/styles.css', 'myresume/assets/cat-yarn.mp4', 'myresume/assets/cat-yarn-start.webp', 'myresume/assets/cat-yarn-end.webp', 'v2-pm/index.html', 'v2-pm/styles.css', 'v2-pm/script.js', 'v2-pm/smart-print.js', ...[...projects, ...personalProjects].map(project => `myresume/cases/${project.id}.html`)];
+  const publishFiles = ['index.html', 'assets/resume.json', 'PDF/resume-v2-pm.pdf', 'myresume/index.html', 'myresume/app.js', 'myresume/styles.css', 'v2-pm/index.html', 'v2-pm/styles.css', 'v2-pm/script.js', 'v2-pm/smart-print.js', ...[...projects, ...personalProjects].map(project => `myresume/cases/${project.id}.html`)];
   publishFiles.forEach(copy);
   write(resolve(OUTPUT_DIR, '.nojekyll'), '');
   console.log(`站点已生成到 ${OUTPUT_DIR}（${publishFiles.length} 个发布文件）`);
